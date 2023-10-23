@@ -26,7 +26,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 1527
+  controlID: 24
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 1528
+  controlID: 25
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -687,9 +687,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 0ce3ffffd0d9ffff14d8ffffb0d7ffff50d7fffff0d6ffff94d6ffff34d6ffffd8d5ffff78d5ffff14d5ffffb4d4ffff54d4fffff4d3ffff98d3ffffc6d1ffff62d1fffffed0ffff9ed0ffffc2c6ffff5ec6fffff6c5ffff96c5ffff32c5ffff
-      m_LastClickedID: -15054
-      m_ExpandedIDs: f4ddffff16deffff2adeffff52deffff66deffff84e4ffffcceffffff4f4ffff16fbffff
+      m_SelectedIDs: 367f0000
+      m_LastClickedID: 0
+      m_ExpandedIDs: 5831ffffc232ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -778,12 +778,15 @@ MonoBehaviour:
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
+    m_VersionControlStates: []
+    m_SoftLockControlStates: []
     m_ReferencingInstanceIDs: 
     m_SceneHandles: 
     m_ShowAllHits: 0
     m_SkipHidden: 0
     m_SearchArea: 1
-    m_Folders: []
+    m_Folders:
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -792,14 +795,14 @@ MonoBehaviour:
   m_StartGridSize: 64
   m_LastFolders: []
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: D:\SVN\Eleves\mcharre\ProjetPerso\BraceletCreator
+  m_LastProjectPath: C:\Users\marco\Desktop\Perso\ProjetPerso\BraceletCreator
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 3ea80000
     m_LastClickedID: 43070
-    m_ExpandedIDs: ffffffff000000000c1e000034590000
+    m_ExpandedIDs: 
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -825,9 +828,9 @@ MonoBehaviour:
       m_ResourceFile: 
   m_AssetTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 0ce3ffffd0d9ffff14d8ffffb0d7ffff50d7fffff0d6ffff94d6ffff34d6ffffd8d5ffff78d5ffff14d5ffffb4d4ffff54d4fffff4d3ffff98d3ffffc6d1ffff62d1fffffed0ffff9ed0ffffc2c6ffff5ec6fffff6c5ffff96c5ffff32c5ffff
-    m_LastClickedID: 0
-    m_ExpandedIDs: 0ac1ffffffffffff0000000034590000
+    m_SelectedIDs: 367f0000
+    m_LastClickedID: 32566
+    m_ExpandedIDs: fffffffff2050000da060000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -852,8 +855,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 0ce3ffffd0d9ffff14d8ffffb0d7ffff50d7fffff0d6ffff94d6ffff34d6ffffd8d5ffff78d5ffff14d5ffffb4d4ffff54d4fffff4d3ffff98d3ffffc6d1ffff62d1fffffed0ffff9ed0ffffc2c6ffff5ec6fffff6c5ffff96c5ffff32c5ffff
-    m_LastClickedInstanceID: -7412
+    m_SelectedInstanceIDs: 367f0000
+    m_LastClickedInstanceID: 32566
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 
     m_RenameOverlay:
