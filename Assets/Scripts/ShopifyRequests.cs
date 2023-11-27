@@ -91,41 +91,29 @@ public static class ShopifyRequests
     {
         string commands = string.Join('&', commandList);
 
-        string fullURL = "https://ab7949-3.myshopify.com/api/graphql";
+        string fullURL = "https://ab7949-3.myshopify.com/api/2023-10/graphql";
 
         //Jaspe rouge roul�e
         string jsonData = ConvertProductToJson("8719709241676", 1);
 
-        string addToCartMutation = @"
-          mutation {
-            checkoutCreate(input: {lineItems: [{variantId: """ + "8719709241676" + @""", quantity: 1}]}) {
-              checkout {
-                id
-              }
-              checkoutUserErrors {
-                message
-              }
-            }
-          }
-        ";
-
         UnityWebRequest request = UnityWebRequest.Post(fullURL, "POST", "application/json");
-        //request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
         request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
 
-        string requestBody = "{\"query\":\"" + addToCartMutation + "\"}";
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(requestBody);
+        string query = "{\"query\": \"query MyQuery { shop { name } }\"}";
+
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(query);
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
 
-        //UnityWebRequest request = UnityWebRequest.Post(fullURL, graphqlQuery, "application/json");
-        ////request.SetRequestHeader("Content-Type", "application/json");
-        //request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
         request.SendWebRequest().completed += (operation) =>
         {
             if (request.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("Requ�te POST envoy�e");
+                string result = System.Text.Encoding.UTF8.GetString(request.downloadHandler.data);
+
+                Debug.Log("Requ�te POST envoy�e : " + result);
+
             }
             else
                 Debug.LogError(request.error);
