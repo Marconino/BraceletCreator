@@ -2,9 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+using static UnityEditor.UIElements.ToolbarMenu;
 
 public static class ShopifyRequests
 {
+    public class AddToCartRequest
+    {
+        public string id;
+        public int quantity;
+    }
+
+    public enum ShopifyRequestsType
+    {
+        GET,
+        POST
+    }
+
     public class ProductsJSON
     {
         public List<Product> products;
@@ -71,6 +85,72 @@ public static class ShopifyRequests
         };
 
         commandList.Clear();
+    }
+
+    public static void StartPostRequest()
+    {
+        string commands = string.Join('&', commandList);
+
+        string fullURL = "https://ab7949-3.myshopify.com/api/graphql";
+
+        //Jaspe rouge roul�e
+        string jsonData = ConvertProductToJson("8719709241676", 1);
+
+        string addToCartMutation = @"
+          mutation {
+            checkoutCreate(input: {lineItems: [{variantId: """ + "8719709241676" + @""", quantity: 1}]}) {
+              checkout {
+                id
+              }
+              checkoutUserErrors {
+                message
+              }
+            }
+          }
+        ";
+
+        UnityWebRequest request = UnityWebRequest.Post(fullURL, "POST", "application/json");
+        //request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+
+        string requestBody = "{\"query\":\"" + addToCartMutation + "\"}";
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(requestBody);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        //UnityWebRequest request = UnityWebRequest.Post(fullURL, graphqlQuery, "application/json");
+        ////request.SetRequestHeader("Content-Type", "application/json");
+        //request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+        request.SendWebRequest().completed += (operation) =>
+        {
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Requ�te POST envoy�e");
+            }
+            else
+                Debug.LogError(request.error);
+
+            request.Dispose();
+        };
+    }
+
+    static string ConvertProductToJson(string productId, int quantity)
+    {
+        AddToCartRequest addToCartRequest = new AddToCartRequest
+        {
+            id = productId,
+            quantity = quantity
+        };
+
+        //'items: [ { id: 12345678901234, quantity: 1 } ]'
+        string jsonData = "[ { id: " + productId + ", quantity: " + quantity + " } ]"; /* Newtonsoft.Json.JsonConvert.SerializeObject(addToCartRequest);*/
+
+        WWWForm form = new WWWForm();
+        form.AddField("Content-Type", "application/json");
+        //form.AddField("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+        form.AddField("body", jsonData);
+
+        return jsonData;
     }
 
     static string FormatJSONTextToArrayText(string _json)
