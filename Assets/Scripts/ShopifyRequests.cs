@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using static UnityEditor.UIElements.ToolbarMenu;
 
 public static class ShopifyRequests
 {
@@ -59,21 +60,72 @@ public static class ShopifyRequests
     }
 
     public static void StartRequest(bool _fromCollection = false)
-    {
-        string commands = string.Join('&', commandList);
+    {   
+        string apiUrl = "https://ab7949-3.myshopify.com/api/2023-10/graphql.json"; // Remplacez par l'URL de votre boutique Shopify
 
-        string fullURL = _fromCollection ? url + collection + endpoint + commands : url + endpoint + commands;
+        //        string graphqlQuery = @"
+        //{
+        //  ""query"": ""query {
+        //    collection(id: \""gid://shopify/Collection/609431978316\"") {
+        //      handle
+        //      products(first: 100) {
+        //        nodes {
+        //          title
+        //          variants(first: 100) {
+        //            nodes {
+        //              price {
+        //                amount
+        //              }
+        //            }
+        //          }
+        //          images(first: 100) {
+        //            nodes {
+        //              url
+        //            }
+        //          }
+        //        }
+        //      }
+        //    }
+        //  }""
+        //}";
 
-        UnityWebRequest request = UnityWebRequest.Get(fullURL);
-        request.SetRequestHeader("X-Shopify-Access-Token", token);
+        string graphqlQuery = @"
+{
+  ""query"": ""query {
+    collection(id: \""gid://shopify/Collection/609431978316\"") {
+      handle
+      products(first: 100) {
+        nodes {
+          title
+          variants(first: 100) {
+            nodes {
+              price {
+                amount
+              }
+            }
+          }
+          images(first: 100) {
+            nodes {
+              url
+            }
+          }
+        }
+      }
+    }
+  }""
+}";
+        UnityWebRequest request = UnityWebRequest.Post(apiUrl, graphqlQuery, "application/json");
+        request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+
         request.SendWebRequest().completed += (operation) =>
         {
             if (request.result == UnityWebRequest.Result.Success)
             {
                 if (_fromCollection)
                 {
-                    string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
-                    ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
+                    Debug.Log(request.downloadHandler.text);
+                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
+                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
                 }
                 else
                     productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request.downloadHandler.text);
@@ -84,7 +136,45 @@ public static class ShopifyRequests
             request.Dispose();
         };
 
-        commandList.Clear();
+        string graphqlMutation = @"
+        mutation {
+          cartCreate(input: {
+            lines: [
+              {
+                quantity: 1,
+                merchandiseId: ""gid://shopify/ProductVariant/47389641245004""
+              }
+            ]
+          }) {
+            cart {
+              checkoutUrl
+            }
+          }
+        }";
+
+
+
+        UnityWebRequest request2 = UnityWebRequest.Post(apiUrl, graphqlMutation, "application/json");
+        request2.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+
+        request2.SendWebRequest().completed += (operation) =>
+        {
+            if (request2.result == UnityWebRequest.Result.Success)
+            {
+                if (_fromCollection)
+                {
+                    Debug.Log(request2.downloadHandler.text);
+                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
+                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
+                }
+                else
+                    productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request2.downloadHandler.text);
+            }
+            else
+                Debug.LogError(request2.error);
+
+            request2.Dispose();
+        };
     }
 
     public static void StartPostRequest()
@@ -97,8 +187,9 @@ public static class ShopifyRequests
         string jsonData = ConvertProductToJson("8719709241676", 1);
 
         UnityWebRequest request = UnityWebRequest.Post(fullURL, "POST", "application/json");
-        request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+        //request.SetRequestHeader("Content-Type", "application/json");
+        //request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+        request.SetRequestHeader("X-Shopify-Access-Token", token);
 
         string query = "{\"query\": \"query MyQuery { shop { name } }\"}";
 

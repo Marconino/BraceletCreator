@@ -22,31 +22,31 @@ public class ProductsManager : MonoBehaviour
         ids = new List<string>(); 
         products = new List<ShopifyRequests.Product>();
 
-        //StartRequestIDs();
-        ShopifyRequests.StartPostRequest();
+        StartRequestIDs();
+        //ShopifyRequests.StartPostRequest();
     }
 
     void Update()
     {
-        //if (!hasReceivedAllData)
-        //{
-        //    if (ShopifyRequests.IsIDsReceived())
-        //    {
-        //        ids = ShopifyRequests.GetIDs();
-        //        StartRequestProductsFromIDs(ids);
-        //    }
+        if (!hasReceivedAllData)
+        {
+            if (ShopifyRequests.IsIDsReceived())
+            {
+                ids = ShopifyRequests.GetIDs();
+                StartRequestProductsFromIDs(ids);
+            }
 
-        //    if (ShopifyRequests.IsProductsReceived())
-        //    {
-        //        products = ShopifyRequests.GetProducts();
-        //        hasReceivedAllData = true;
-        //    }
-        //}
+            if (ShopifyRequests.IsProductsReceived())
+            {
+                products = ShopifyRequests.GetProducts();
+                hasReceivedAllData = true;
+            }
+        }
     }
 
     void StartRequestIDs()
     {
-        ShopifyRequests.AddCommand("fields", "id");
+        //ShopifyRequests.AddCommand("fields", "id");
         ShopifyRequests.StartRequest(true);
     }
 
