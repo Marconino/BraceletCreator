@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -136,25 +135,12 @@ public static class ShopifyRequests
             request.Dispose();
         };
 
-        string graphqlMutation = @"
-        mutation {
-          cartCreate(input: {
-            lines: [
-              {
-                quantity: 1,
-                merchandiseId: ""gid://shopify/ProductVariant/47389641245004""
-              }
-            ]
-          }) {
-            cart {
-              checkoutUrl
-            }
-          }
-        }";
+        //string test = "{\"query\": \"mutation { cartCreate(input: { }) { cart { checkoutUrl } } } \"}";
+        string test = "{\"query\": \"mutation { cartCreate(input: { lines:[{quantity: 2, merchandiseId: \\\"gid://shopify/ProductVariant/47389641245004\\\"}] }) { cart { checkoutUrl } } } \"}";
 
+        UnityWebRequest request2 = UnityWebRequest.Post(apiUrl, test, "application/json");
+        request2.SetRequestHeader("Accept", "application/json");
 
-
-        UnityWebRequest request2 = UnityWebRequest.Post(apiUrl, graphqlMutation, "application/json");
         request2.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
 
         request2.SendWebRequest().completed += (operation) =>
@@ -174,6 +160,28 @@ public static class ShopifyRequests
                 Debug.LogError(request2.error);
 
             request2.Dispose();
+        };
+
+        UnityWebRequest request3 = UnityWebRequest.Get("https://ab7949-3.myshopify.com/cart.js");
+        request3.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+
+        request3.SendWebRequest().completed += (operation) =>
+        {
+            if (request3.result == UnityWebRequest.Result.Success)
+            {
+                if (_fromCollection)
+                {
+                    Debug.Log(request3.downloadHandler.text);
+                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
+                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
+                }
+                else
+                    productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request3.downloadHandler.text);
+            }
+            else
+                Debug.LogError(request3.error);
+
+            request3.Dispose();
         };
     }
 
