@@ -1,20 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PearlsMovement : MonoBehaviour
 {
+    Vector3[] pearlsInitialPos;
+
     GameObject goSelected;
     CircleCollider2D circleColliderSelected;
     CircleCollider2D[] pearls;
 
     void Start()
     {
-        pearls = new CircleCollider2D[24];
+        pearlsInitialPos = new Vector3[transform.childCount];
+        pearls = new CircleCollider2D[transform.childCount];
+
+        HorizontalLayoutGroup horizontalLayoutGroup = transform.GetComponent<HorizontalLayoutGroup>();
+        
         for (int i = 0; i < pearls.Length; i++)
         {
-            pearls[i] = transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+            RectTransform childRectTransform = transform.GetChild(i) as RectTransform;
+            
+            Transform child = transform.GetChild(i);
+            pearls[i] = child.GetComponent<CircleCollider2D>();
+            pearlsInitialPos[i] = pearls[i].transform.position;
         }
     }
 
@@ -50,6 +64,14 @@ public class PearlsMovement : MonoBehaviour
                 if (pearls[i].IsTouching(circleColliderSelected))
                 {
                     Debug.Log(circleColliderSelected  + " is touching " + pearls[i]);
+                    int newIndexPos = pearls[i].transform.position.x - goSelected.transform.position.x > 0 ? i - 1 : i + 1;
+                    
+                    goSelected.transform.position = pearlsInitialPos[i];
+                    pearls[i].transform.position = pearlsInitialPos[newIndexPos];
+
+                    goSelected = null;
+                    circleColliderSelected = null;
+                    break;
                 }
             }
         }
