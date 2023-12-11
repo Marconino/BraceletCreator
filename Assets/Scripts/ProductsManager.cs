@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -19,12 +18,17 @@ public class ProductsManager : MonoBehaviour
             instance = this;
     }
 
+    public void AddProductOnCart()
+    {
+        Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=47194252640588&quantity=5");
+    }
+
     void Start()
     {
         ids = new List<string>();
         products = new List<ShopifyRequests.Product>();
 
-        StartRequestIDs();
+        //StartRequestIDs();
         //ShopifyRequests.StartPostRequest();
         ScreenCapture.CaptureScreenshot("screenshot_test.png");
         string dataPah = Application.dataPath;

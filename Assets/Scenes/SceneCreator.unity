@@ -8865,8 +8865,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1088424486}
   m_HandleRect: {fileID: 1088424485}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.7
+  m_Value: 1.0000002
+  m_Size: 0.70000005
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11219,7 +11219,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1562060668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d95c2e71bf163e409364c9034113b58, type: 3}
+  m_Script: {fileID: 11500000, guid: 2949261f17bb2bb4885679e31137ad56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1585186285
@@ -14304,7 +14304,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1914440723}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1562060670}
+        m_TargetAssemblyTypeName: ProductsManager, Assembly-CSharp
+        m_MethodName: AddProductOnCart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1914440723
 MonoBehaviour:
   m_ObjectHideFlags: 0

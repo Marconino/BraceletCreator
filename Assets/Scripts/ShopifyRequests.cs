@@ -162,7 +162,7 @@ public static class ShopifyRequests
             request2.Dispose();
         };
 
-        UnityWebRequest request3 = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/api_call_write_products.php");
+        UnityWebRequest request3 = UnityWebRequest.Get("https://stylenzamineraux.fr/apps/braceletcreator");
         request3.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
 
         request3.SendWebRequest().completed += (operation) =>
