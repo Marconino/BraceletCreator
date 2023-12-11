@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class ProductsManager : MonoBehaviour
 {
@@ -19,11 +21,33 @@ public class ProductsManager : MonoBehaviour
 
     void Start()
     {
-        ids = new List<string>(); 
+        ids = new List<string>();
         products = new List<ShopifyRequests.Product>();
 
         StartRequestIDs();
         //ShopifyRequests.StartPostRequest();
+        ScreenCapture.CaptureScreenshot("screenshot_test.png");
+        string dataPah = Application.dataPath;
+        string path = dataPah.Substring(0, dataPah.Length - 7);
+        string imagePath = path + "/screenshot_test.png"; // Chemin de votre image dans le projet Unity
+        byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("image", imageBytes, "screenshot.png", "image/png");
+
+        // Effectuer une requête POST vers le serveur
+        UnityWebRequest www = UnityWebRequest.Post("https://charremarc.fr/Images/upload.php", form);
+        www.SendWebRequest().completed += (operation) =>
+        {
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Image envoyée !");
+            }
+            else
+            {
+                Debug.LogError(www.error);
+            }
+        };
     }
 
     void Update()
