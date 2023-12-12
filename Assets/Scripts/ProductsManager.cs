@@ -15,7 +15,6 @@ public class ProductsManager : MonoBehaviour
     List<ShopifyRequests.Product> products;
     bool hasReceivedAllData = false;
 
-    bool test = true;
     [DllImport("__Internal")]
     private static extern void SendImageToJS(string _imageStr);
 
@@ -73,10 +72,9 @@ public class ProductsManager : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (test)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(ScreenShot());
-            test = false;
         }
     }
     IEnumerator ScreenShot()
