@@ -15,7 +15,7 @@ public class ProductsManager : MonoBehaviour
     List<ShopifyRequests.Product> products;
     bool hasReceivedAllData = false;
 
-
+    bool test = true;
     [DllImport("__Internal")]
     private static extern void SendImageToJS(string _imageStr);
 
@@ -38,15 +38,15 @@ public class ProductsManager : MonoBehaviour
         //StartRequestIDs();
         //ShopifyRequests.StartPostRequest();
 
-        Texture2D screenTexture = ScreenCapture.CaptureScreenshotAsTexture();
-        //Sprite newSprite = Sprite.Create(screenTexture, image.sprite.rect, image.sprite.pivot);
-        //image.sprite = newSprite;
+        //Texture2D screenTexture = ScreenCapture.CaptureScreenshotAsTexture();
+        ////Sprite newSprite = Sprite.Create(screenTexture, image.sprite.rect, image.sprite.pivot);
+        ////image.sprite = newSprite;
 
-        byte[] imageBytes = screenTexture.EncodeToPNG();
-     
-        // Convertir les bytes en chaîne base64
-        string base64Image = Convert.ToBase64String(imageBytes);
-        SendImageToJS(base64Image);
+        //byte[] imageBytes = screenTexture.EncodeToPNG();
+
+        //// Convertir les bytes en chaîne base64
+        //string base64Image = Convert.ToBase64String(imageBytes);
+        //SendImageToJS(base64Image);
 
         //ScreenCapture.CaptureScreenshot("screenshot_test.png");
         //string dataPah = Application.dataPath;
@@ -71,7 +71,23 @@ public class ProductsManager : MonoBehaviour
         //    }
         //};
     }
-
+    private void LateUpdate()
+    {
+        if (test)
+        {
+            StartCoroutine(ScreenShot());
+            test = false;
+        }
+    }
+    IEnumerator ScreenShot()
+    {
+        yield return new WaitForEndOfFrame();
+        Texture2D screenTexture = ScreenCapture.CaptureScreenshotAsTexture();
+        byte[] imageBytes = screenTexture.EncodeToPNG();
+        string base64Image = Convert.ToBase64String(imageBytes);
+        SendImageToJS(base64Image);
+        Destroy(screenTexture);
+    }
     void Update()
     {
         //if (!hasReceivedAllData)
