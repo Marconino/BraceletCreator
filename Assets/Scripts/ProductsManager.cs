@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -12,8 +13,8 @@ public class ProductsManager : MonoBehaviour
     public static ProductsManager Instance { get => instance; }
 
     List<string> ids;
-    List<ShopifyRequests.Product> products;
     bool hasReceivedAllData = false;
+    int nbProducts = 0;
 
     [DllImport("__Internal")]
     private static extern void SendImageToJS(string _imageStr);
@@ -32,43 +33,12 @@ public class ProductsManager : MonoBehaviour
     void Start()
     {
         ids = new List<string>();
-        products = new List<ShopifyRequests.Product>();
+
+        ShopifyRequests.StartRequest();
+        GetCountProductsFromCollection();
 
         //StartRequestIDs();
         //ShopifyRequests.StartPostRequest();
-
-        //Texture2D screenTexture = ScreenCapture.CaptureScreenshotAsTexture();
-        ////Sprite newSprite = Sprite.Create(screenTexture, image.sprite.rect, image.sprite.pivot);
-        ////image.sprite = newSprite;
-
-        //byte[] imageBytes = screenTexture.EncodeToPNG();
-
-        //// Convertir les bytes en chaîne base64
-        //string base64Image = Convert.ToBase64String(imageBytes);
-        //SendImageToJS(base64Image);
-
-        //ScreenCapture.CaptureScreenshot("screenshot_test.png");
-        //string dataPah = Application.dataPath;
-        //string path = dataPah.Substring(0, dataPah.Length - 7);
-        //string imagePath = path + "/screenshot_test1.png"; // Chemin de votre image dans le projet Unity
-        //byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
-
-        //WWWForm form = new WWWForm();
-        //form.AddBinaryData("image", imageBytes, "screenshot.png", "image/png");
-
-        //// Effectuer une requête POST vers le serveur
-        //UnityWebRequest www = UnityWebRequest.Post("https://charremarc.fr/Images/upload.php", form);
-        //www.SendWebRequest().completed += (operation) =>
-        //{
-        //    if (www.result == UnityWebRequest.Result.Success)
-        //    {
-        //        Debug.Log("Image envoyée !");
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError(www.error);
-        //    }
-        //};
     }
     private void LateUpdate()
     {
@@ -117,4 +87,22 @@ public class ProductsManager : MonoBehaviour
         ShopifyRequests.AddCommand("fields", "images", "variants", "title");
         //ShopifyRequests.StartRequest();
     }
+
+    void GetCountProductsFromCollection()
+    {
+        UnityWebRequest request = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/count_products_collection.php");
+
+        request.SendWebRequest().completed += (operation) =>
+        {
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                nbProducts = int.Parse(request.downloadHandler.text);
+            }
+            else
+                Debug.LogError(request.error);
+
+            request.Dispose();
+        };
+    }
+
 }

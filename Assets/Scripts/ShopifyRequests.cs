@@ -7,37 +7,16 @@ using UnityEngine.UI;
 
 public static class ShopifyRequests
 {
-    public class AddToCartRequest
+    class CollectionFromShopify
     {
-        public string id;
-        public int quantity;
+        public string collectionTitle;
+        public List<Products> products;
     }
-
-    public enum ShopifyRequestsType
-    {
-        GET,
-        POST
-    }
-
-    public class ProductsJSON
-    {
-        public List<Product> products;
-    }
-
-    public class Product
+    class Products
     {
         public string title;
-        public List<ProductVariant> variants;
-        public List<ProductImage> images;
-    }
-    public class ProductVariant
-    {
         public string price;
-    }
-
-    public class ProductImage
-    {
-        public string src;
+        public string[] imagesUrl;
     }
 
     static string token = "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";
@@ -49,7 +28,8 @@ public static class ShopifyRequests
     static List<string> commandList = new List<string>();
 
     static List<string> ids = null;
-    static ProductsJSON productsJSON = null;
+
+    static CollectionFromShopify collectionFromShopify;
 
     public static void AddCommand(string _parameter, params string[] _fields)
     {
@@ -59,130 +39,84 @@ public static class ShopifyRequests
     }
 
     public static void StartRequest(bool _fromCollection = false)
-    {   
-//        string apiUrl = "https://ab7949-3.myshopify.com/api/2023-10/graphql.json"; // Remplacez par l'URL de votre boutique Shopify
+    {
+        string apiUrl = "https://charremarc.fr/PHPShopify/get_products_collection.php"; // Remplacez par l'URL de votre boutique Shopify
 
-//        //        string graphqlQuery = @"
-//        //{
-//        //  ""query"": ""query {
-//        //    collection(id: \""gid://shopify/Collection/609431978316\"") {
-//        //      handle
-//        //      products(first: 100) {
-//        //        nodes {
-//        //          title
-//        //          variants(first: 100) {
-//        //            nodes {
-//        //              price {
-//        //                amount
-//        //              }
-//        //            }
-//        //          }
-//        //          images(first: 100) {
-//        //            nodes {
-//        //              url
-//        //            }
-//        //          }
-//        //        }
-//        //      }
-//        //    }
-//        //  }""
-//        //}";
+        UnityWebRequest request = UnityWebRequest.Get(apiUrl);
 
-//        string graphqlQuery = @"
-//{
-//  ""query"": ""query {
-//    collection(id: \""gid://shopify/Collection/609431978316\"") {
-//      handle
-//      products(first: 100) {
-//        nodes {
-//          title
-//          variants(first: 100) {
-//            nodes {
-//              price {
-//                amount
-//              }
-//            }
-//          }
-//          images(first: 100) {
-//            nodes {
-//              url
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }""
-//}";
-//        UnityWebRequest request = UnityWebRequest.Post(apiUrl, graphqlQuery, "application/json");
-//        request.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+        request.SendWebRequest().completed += (operation) =>
+        {
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log(request.downloadHandler.text);
+                collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<CollectionFromShopify>(request.downloadHandler.text);
+                Debug.Log(collectionFromShopify.collectionTitle);
+                foreach(Products product in collectionFromShopify.products)
+                {
+                    string productLog = "Title : " + product.title + " , Price : " + product.price + " , ImagesUrl : ";
 
-//        request.SendWebRequest().completed += (operation) =>
-//        {
-//            if (request.result == UnityWebRequest.Result.Success)
-//            {
-//                if (_fromCollection)
-//                {
-//                    Debug.Log(request.downloadHandler.text);
-//                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
-//                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
-//                }
-//                else
-//                    productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request.downloadHandler.text);
-//            }
-//            else
-//                Debug.LogError(request.error);
+                    foreach(string url in product.imagesUrl)
+                    {
+                        productLog += url + ", ";
+                    }
+                    productLog.Remove(productLog.Length - 1);
+                    Debug.Log(productLog);
+                }
+            }
+            else
+                Debug.LogError(request.error);
 
-//            request.Dispose();
-//        };
+            request.Dispose();
+        };
 
-//        //string test = "{\"query\": \"mutation { cartCreate(input: { }) { cart { checkoutUrl } } } \"}";
-//        string test = "{\"query\": \"mutation { cartCreate(input: { lines:[{quantity: 2, merchandiseId: \\\"gid://shopify/ProductVariant/47389641245004\\\"}] }) { cart { checkoutUrl } } } \"}";
+        //        //string test = "{\"query\": \"mutation { cartCreate(input: { }) { cart { checkoutUrl } } } \"}";
+        //        string test = "{\"query\": \"mutation { cartCreate(input: { lines:[{quantity: 2, merchandiseId: \\\"gid://shopify/ProductVariant/47389641245004\\\"}] }) { cart { checkoutUrl } } } \"}";
 
-//        UnityWebRequest request2 = UnityWebRequest.Post(apiUrl, test, "application/json");
-//        request2.SetRequestHeader("Accept", "application/json");
+        //        UnityWebRequest request2 = UnityWebRequest.Post(apiUrl, test, "application/json");
+        //        request2.SetRequestHeader("Accept", "application/json");
 
-//        request2.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+        //        request2.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
 
-//        request2.SendWebRequest().completed += (operation) =>
-//        {
-//            if (request2.result == UnityWebRequest.Result.Success)
-//            {
-//                if (_fromCollection)
-//                {
-//                    Debug.Log(request2.downloadHandler.text);
-//                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
-//                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
-//                }
-//                else
-//                    productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request2.downloadHandler.text);
-//            }
-//            else
-//                Debug.LogError(request2.error);
+        //        request2.SendWebRequest().completed += (operation) =>
+        //        {
+        //            if (request2.result == UnityWebRequest.Result.Success)
+        //            {
+        //                if (_fromCollection)
+        //                {
+        //                    Debug.Log(request2.downloadHandler.text);
+        //                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
+        //                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
+        //                }
+        //                else
+        //                    productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request2.downloadHandler.text);
+        //            }
+        //            else
+        //                Debug.LogError(request2.error);
 
-//            request2.Dispose();
-//        };
+        //            request2.Dispose();
+        //        };
 
-//        UnityWebRequest request3 = UnityWebRequest.Get("https://stylenzamineraux.fr/apps/braceletcreator");
-//        request3.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
+        //        UnityWebRequest request3 = UnityWebRequest.Get("https://stylenzamineraux.fr/apps/braceletcreator");
+        //        request3.SetRequestHeader("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
 
-//        request3.SendWebRequest().completed += (operation) =>
-//        {
-//            if (request3.result == UnityWebRequest.Result.Success)
-//            {
-//                if (_fromCollection)
-//                {
-//                    Debug.Log(request3.downloadHandler.text);
-//                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
-//                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
-//                }
-//                else
-//                    productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request3.downloadHandler.text);
-//            }
-//            else
-//                Debug.LogError(request3.error);
+        //        request3.SendWebRequest().completed += (operation) =>
+        //        {
+        //            if (request3.result == UnityWebRequest.Result.Success)
+        //            {
+        //                if (_fromCollection)
+        //                {
+        //                    Debug.Log(request3.downloadHandler.text);
+        //                    //string arrayText = FormatJSONTextToArrayText(request.downloadHandler.text);
+        //                    //ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(arrayText);
+        //                }
+        //                else
+        //                    productsJSON = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductsJSON>(request3.downloadHandler.text);
+        //            }
+        //            else
+        //                Debug.LogError(request3.error);
 
-//            request3.Dispose();
-//        };
+        //            request3.Dispose();
+        //        };
     }
 
     public static void StartPostRequest()
@@ -221,24 +155,6 @@ public static class ShopifyRequests
         //};
     }
 
-    static string ConvertProductToJson(string productId, int quantity)
-    {
-        AddToCartRequest addToCartRequest = new AddToCartRequest
-        {
-            id = productId,
-            quantity = quantity
-        };
-
-        //'items: [ { id: 12345678901234, quantity: 1 } ]'
-        string jsonData = "[ { id: " + productId + ", quantity: " + quantity + " } ]"; /* Newtonsoft.Json.JsonConvert.SerializeObject(addToCartRequest);*/
-
-        WWWForm form = new WWWForm();
-        form.AddField("Content-Type", "application/json");
-        //form.AddField("X-Shopify-Storefront-Access-Token", "d89ae3d032979360074553ab9f6c97cb");
-        form.AddField("body", jsonData);
-
-        return jsonData;
-    }
 
     static string FormatJSONTextToArrayText(string _json)
     {
@@ -256,10 +172,6 @@ public static class ShopifyRequests
     {
         return ids != null;
     }  
-    public static bool IsProductsReceived()
-    {
-        return productsJSON != null;
-    }
 
     public static List<string> GetIDs()
     {
@@ -267,11 +179,4 @@ public static class ShopifyRequests
         ids = null;
         return idsResult;
     }
-
-    public static List<Product> GetProducts()
-    {
-        List<Product> productsResult = productsJSON.products;
-        productsJSON = null;
-        return productsResult;
-    }  
 }
