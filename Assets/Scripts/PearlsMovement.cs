@@ -20,15 +20,21 @@ public class PearlsMovement : MonoBehaviour
         pearls = new CircleCollider2D[transform.childCount];
 
         HorizontalLayoutGroup horizontalLayoutGroup = transform.GetComponent<HorizontalLayoutGroup>();
-        
+        RectTransform childRectTransform = transform.GetChild(0) as RectTransform;
+        int startPos = (int)childRectTransform.sizeDelta.x / 2;
+
         for (int i = 0; i < pearls.Length; i++)
         {
+            childRectTransform = transform.GetChild(i) as RectTransform;
 
-            RectTransform childRectTransform = transform.GetChild(i) as RectTransform;
-            
             Transform child = transform.GetChild(i);
+            Vector3 childPos = transform.GetChild(i).localPosition;
+
+            Debug.Log("child : " + i + " pos : " + startPos);
             pearls[i] = child.GetComponent<CircleCollider2D>();
             pearlsInitialPos[i] = pearls[i].transform.position;
+
+            startPos += (int)childRectTransform.sizeDelta.x;
         }
     }
 
