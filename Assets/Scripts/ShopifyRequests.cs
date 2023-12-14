@@ -7,12 +7,12 @@ using UnityEngine.UI;
 
 public static class ShopifyRequests
 {
-    class CollectionFromShopify
+    public class CollectionFromShopify
     {
         public string collectionTitle;
         public List<Products> products;
     }
-    class Products
+    public class Products
     {
         public string title;
         public string price;
@@ -40,34 +40,40 @@ public static class ShopifyRequests
 
     public static void StartRequest(bool _fromCollection = false)
     {
-        string apiUrl = "https://charremarc.fr/PHPShopify/get_products_collection.php?count=2"; // Remplacez par l'URL de votre boutique Shopify
+        //string apiUrl = "https://charremarc.fr/PHPShopify/get_products_collection.php?count=2"; // Remplacez par l'URL de votre boutique Shopify
+        //UnityWebRequest request = UnityWebRequest.Get(apiUrl);
 
-        UnityWebRequest request = UnityWebRequest.Get(apiUrl);
+        //request.SendWebRequest().completed += (operation) =>
+        //{
+        //    if (request.result == UnityWebRequest.Result.Success)
+        //    {
+        //        Debug.Log(request.downloadHandler.text);
+        //        collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<CollectionFromShopify>(request.downloadHandler.text);
+        //        Debug.Log(collectionFromShopify.collectionTitle);
+        //        foreach(Products product in collectionFromShopify.products)
+        //        {
+        //            string productLog = "Title : " + product.title + " , Price : " + product.price + " , ImagesUrl : ";
 
-        request.SendWebRequest().completed += (operation) =>
-        {
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log(request.downloadHandler.text);
-                collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<CollectionFromShopify>(request.downloadHandler.text);
-                Debug.Log(collectionFromShopify.collectionTitle);
-                foreach(Products product in collectionFromShopify.products)
-                {
-                    string productLog = "Title : " + product.title + " , Price : " + product.price + " , ImagesUrl : ";
+        //            foreach(string url in product.imagesUrl)
+        //            {
+        //                UnityWebRequest test = UnityWebRequestTexture.GetTexture(url);
 
-                    foreach(string url in product.imagesUrl)
-                    {
-                        productLog += url + ", ";
-                    }
-                    productLog.Remove(productLog.Length - 1);
-                    Debug.Log(productLog);
-                }
-            }
-            else
-                Debug.LogError(request.error);
+        //                test.SendWebRequest().completed += (operation) =>
+        //                {
 
-            request.Dispose();
-        };
+        //                };
+
+        //                productLog += url + ", ";
+        //            }
+        //            productLog.Remove(productLog.Length - 1);
+        //            Debug.Log(productLog);
+        //        }
+        //    }
+        //    else
+        //        Debug.LogError(request.error);
+
+        //    request.Dispose();
+        //};
 
         //        //string test = "{\"query\": \"mutation { cartCreate(input: { }) { cart { checkoutUrl } } } \"}";
         //        string test = "{\"query\": \"mutation { cartCreate(input: { lines:[{quantity: 2, merchandiseId: \\\"gid://shopify/ProductVariant/47389641245004\\\"}] }) { cart { checkoutUrl } } } \"}";

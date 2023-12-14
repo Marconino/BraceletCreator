@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -19,6 +20,11 @@ public class ProductsManager : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void SendImageToJS(string _imageStr);
 
+    ShopifyRequests.CollectionFromShopify collectionFromShopify;
+    [SerializeField] Image image1;
+    [SerializeField] Image image2;
+
+
     void Awake()
     {
         if (instance == null)
@@ -32,10 +38,55 @@ public class ProductsManager : MonoBehaviour
 
     void Start()
     {
+        image1.sprite = null;
+        image2.sprite = null;   
         ids = new List<string>();
 
         ShopifyRequests.StartRequest();
         GetCountProductsFromCollection();
+
+        string apiUrl = "https://charremarc.fr/PHPShopify/get_products_collection.php?count=1"; // Remplacez par l'URL de votre boutique Shopify
+        UnityWebRequest request = UnityWebRequest.Get(apiUrl);
+
+        request.SendWebRequest().completed += (operation) =>
+        {
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log(request.downloadHandler.text);
+                collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<ShopifyRequests.CollectionFromShopify>(request.downloadHandler.text);
+                Debug.Log(collectionFromShopify.collectionTitle);
+                foreach (ShopifyRequests.Products product in collectionFromShopify.products)
+                {
+                    string productLog = "Title : " + product.title + " , Price : " + product.price + " , ImagesUrl : ";
+
+                    foreach (string url in product.imagesUrl)
+                    {
+                        UnityWebRequest test = UnityWebRequestTexture.GetTexture(url);
+
+                        test.SendWebRequest().completed += (operation) =>
+                        {
+                            Texture2D texture = DownloadHandlerTexture.GetContent(test);
+                            if (image1.sprite == null)
+                            {
+                                image1.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                            }
+                            else
+                            {
+                                image2.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                            }
+                        };
+
+                        productLog += url + ", ";
+                    }
+                    productLog.Remove(productLog.Length - 1);
+                    Debug.Log(productLog);
+                }
+            }
+            else
+                Debug.LogError(request.error);
+
+            request.Dispose();
+        };
 
         //StartRequestIDs();
         //ShopifyRequests.StartPostRequest();
