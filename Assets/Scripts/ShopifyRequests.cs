@@ -40,7 +40,7 @@ public static class ShopifyRequests
 
     public static void StartRequest(bool _fromCollection = false)
     {
-        string apiUrl = "https://charremarc.fr/PHPShopify/get_products_collection.php"; // Remplacez par l'URL de votre boutique Shopify
+        string apiUrl = "https://charremarc.fr/PHPShopify/get_products_collection.php?count=2"; // Remplacez par l'URL de votre boutique Shopify
 
         UnityWebRequest request = UnityWebRequest.Get(apiUrl);
 
