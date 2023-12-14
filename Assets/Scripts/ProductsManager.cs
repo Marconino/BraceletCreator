@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class ProductsManager : MonoBehaviour
@@ -13,16 +9,23 @@ public class ProductsManager : MonoBehaviour
     static ProductsManager instance;
     public static ProductsManager Instance { get => instance; }
 
-    List<string> ids;
-    bool hasReceivedAllData = false;
-    int nbProducts = 0;
+    enum RequestSteps
+    {
+        GetProductsCount,
+        GetProducts,
+        GetImagesForProducts,
+        CreateCustomBracelet,
+        AddCustomImageOnCustomBracelet,
+        AddBraceletOnClientCart
+    }
 
     [DllImport("__Internal")]
     private static extern void SendImageToJS(string _imageStr);
 
+    [SerializeField] GameObject productsGO;
     ShopifyRequests.CollectionFromShopify collectionFromShopify;
-    [SerializeField] Image image1;
-    [SerializeField] Image image2;
+    RequestSteps currStep = RequestSteps.GetProductsCount;
+    int currImageProduct = 0;
 
 
     void Awake()
@@ -38,58 +41,7 @@ public class ProductsManager : MonoBehaviour
 
     void Start()
     {
-        image1.sprite = null;
-        image2.sprite = null;   
-        ids = new List<string>();
-
-        ShopifyRequests.StartRequest();
-        GetCountProductsFromCollection();
-
-        string apiUrl = "https://charremarc.fr/PHPShopify/get_products_collection.php?count=1"; // Remplacez par l'URL de votre boutique Shopify
-        UnityWebRequest request = UnityWebRequest.Get(apiUrl);
-
-        request.SendWebRequest().completed += (operation) =>
-        {
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log(request.downloadHandler.text);
-                collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<ShopifyRequests.CollectionFromShopify>(request.downloadHandler.text);
-                Debug.Log(collectionFromShopify.collectionTitle);
-                foreach (ShopifyRequests.Products product in collectionFromShopify.products)
-                {
-                    string productLog = "Title : " + product.title + " , Price : " + product.price + " , ImagesUrl : ";
-
-                    foreach (string url in product.imagesUrl)
-                    {
-                        UnityWebRequest test = UnityWebRequestTexture.GetTexture(url);
-
-                        test.SendWebRequest().completed += (operation) =>
-                        {
-                            Texture2D texture = DownloadHandlerTexture.GetContent(test);
-                            if (image1.sprite == null)
-                            {
-                                image1.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                            }
-                            else
-                            {
-                                image2.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                            }
-                        };
-
-                        productLog += url + ", ";
-                    }
-                    productLog.Remove(productLog.Length - 1);
-                    Debug.Log(productLog);
-                }
-            }
-            else
-                Debug.LogError(request.error);
-
-            request.Dispose();
-        };
-
-        //StartRequestIDs();
-        //ShopifyRequests.StartPostRequest();
+        ShopifyRequests.StartRequest("https://charremarc.fr/PHPShopify/count_products_collection.php");
     }
     private void LateUpdate()
     {
@@ -107,53 +59,62 @@ public class ProductsManager : MonoBehaviour
         SendImageToJS(base64Image);
         Destroy(screenTexture);
     }
+
     void Update()
     {
-        //if (!hasReceivedAllData)
-        //{
-        //    if (ShopifyRequests.IsIDsReceived())
-        //    {
-        //        ids = ShopifyRequests.GetIDs();
-        //        StartRequestProductsFromIDs(ids);
-        //    }
-
-        //    if (ShopifyRequests.IsProductsReceived())
-        //    {
-        //        products = ShopifyRequests.GetProducts();
-        //        hasReceivedAllData = true;
-        //    }
-        //}
-    }
-
-    void StartRequestIDs()
-    {
-        //ShopifyRequests.AddCommand("fields", "id");
-        ShopifyRequests.StartRequest(true);
-    }
-
-    void StartRequestProductsFromIDs(List<string> _ids)
-    {
-        string idsString = string.Join(",", _ids);
-        ShopifyRequests.AddCommand("ids", idsString);
-        ShopifyRequests.AddCommand("fields", "images", "variants", "title");
-        //ShopifyRequests.StartRequest();
-    }
-
-    void GetCountProductsFromCollection()
-    {
-        UnityWebRequest request = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/count_products_collection.php");
-
-        request.SendWebRequest().completed += (operation) =>
+        if (ShopifyRequests.HasRequestsStarted() && ShopifyRequests.IsFirstRequestCompleted())
         {
-            if (request.result == UnityWebRequest.Result.Success)
+            switch (currStep)
             {
-                nbProducts = int.Parse(request.downloadHandler.text);
+                case RequestSteps.GetProductsCount:
+                    int nbProducts = int.Parse(ShopifyRequests.GetStringData());
+                    for (int i = 0; i < nbProducts; i++)
+                    {
+                        GameObject child = new GameObject("Product_" + i);
+                        child.AddComponent<RectTransform>().pivot = Vector2.zero;
+                        Image image = child.AddComponent<Image>();
+                        child.AddComponent<Button>().targetGraphic = image;
+                        child.transform.parent = productsGO.transform;
+                        child.transform.localScale = Vector3.one;
+                    }
+                    ShopifyRequests.StartRequest("https://charremarc.fr/PHPShopify/get_products_collection.php?count=" + nbProducts);
+                    break;
+                case RequestSteps.GetProducts:
+                    collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<ShopifyRequests.CollectionFromShopify>(ShopifyRequests.GetStringData());
+
+                    foreach (ShopifyRequests.Products products in collectionFromShopify.products)
+                    {
+                        foreach (string imageUrl in products.imagesUrl)
+                        {
+                            ShopifyRequests.StartRequest(imageUrl, true);
+                        }
+                    }
+                    break;
+                case RequestSteps.GetImagesForProducts:
+                    Texture2D texture = ShopifyRequests.GetTexture();
+
+                    if (collectionFromShopify.products[currImageProduct / 2].images == null)
+                    {
+                        collectionFromShopify.products[currImageProduct / 2].images = new Sprite[2];
+                    }
+                    collectionFromShopify.products[currImageProduct / 2].images[currImageProduct % 2] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+                    if (currImageProduct / 2 < productsGO.transform.childCount && currImageProduct % 2 == 0)
+                    {
+                        productsGO.transform.GetChild(currImageProduct / 2).GetComponent<Image>().sprite = collectionFromShopify.products[currImageProduct / 2].images[currImageProduct % 2];
+                    }
+                    currImageProduct++;
+                    break;
+                case RequestSteps.CreateCustomBracelet:
+                    break;
+                case RequestSteps.AddCustomImageOnCustomBracelet:
+                    break;
+                case RequestSteps.AddBraceletOnClientCart:
+                    break;
             }
-            else
-                Debug.LogError(request.error);
 
-            request.Dispose();
-        };
+            if (currStep != RequestSteps.GetImagesForProducts || !ShopifyRequests.HasRequestsStarted())
+                currStep++;
+        }
     }
-
 }
