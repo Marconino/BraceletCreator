@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -13,6 +14,7 @@ public static class ShopifyRequests
     public class Products
     {
         public string title;
+        public string handle;
         public string price;
         public string[] imagesUrl;
         public Sprite[] images;
@@ -27,6 +29,7 @@ public static class ShopifyRequests
         webRequest.SendWebRequest();
     }
 
+
     public static bool HasRequestsStarted()
     {
         return requests.Count > 0;
@@ -34,7 +37,9 @@ public static class ShopifyRequests
 
     public static bool IsFirstRequestCompleted()
     {
-        return requests.Peek().isDone;
+        var obj = requests.Peek();
+        Debug.Log("Percent finish : " + obj.downloadProgress);
+        return obj.isDone;
     }
 
     public static string GetStringData()
@@ -58,7 +63,9 @@ public static class ShopifyRequests
         UnityWebRequest webRequest = requests.Peek();
 
         if (webRequest.result == UnityWebRequest.Result.Success)
-            result = DownloadHandlerTexture.GetContent(webRequest);
+        {
+            result = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
+        }
         else
             Debug.LogError("Error get data from request : " + webRequest.error);
 

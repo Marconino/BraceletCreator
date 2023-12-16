@@ -4397,7 +4397,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 846507280}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b539613505f7fe4a8d50b5891f65ecf, type: 3}
+  m_Script: {fileID: 11500000, guid: 9eaa5becf7aa2ac46beea42254a63c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &858668252
@@ -6064,8 +6064,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1088424486}
   m_HandleRect: {fileID: 1088424485}
   m_Direction: 2
-  m_Value: 1.0000002
-  m_Size: 0.7000001
+  m_Value: 1
+  m_Size: 0.7
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6821,6 +6821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1562060669}
   - component: {fileID: 1562060670}
+  - component: {fileID: 1562060671}
   m_Layer: 0
   m_Name: '@ProductsManager'
   m_TagString: Untagged
@@ -6856,6 +6857,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   productsGO: {fileID: 1255298835}
+  maxConcurrentDownloads: 5
+--- !u!114 &1562060671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562060668}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac107cfaa9fd4545914c8bb4515f4a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageUrls:
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  - https://cdn.shopify.com/s/files/1/0782/2871/7900/files/jasperouge1.jpg?v=1702747290
+  images:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  maxConcurrentDownloads: 5
+  currImage: 0
 --- !u!1 &1608514404
 GameObject:
   m_ObjectHideFlags: 0
