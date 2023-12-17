@@ -18,7 +18,6 @@ public class PearlsMovement : MonoBehaviour
             Vector3 childPos = child.localPosition;
 
             pearlsInitialPos[i] = childPos;
-            Debug.Log("child : " + i + " pos : " + childPos);
         }
     }
 
@@ -41,7 +40,6 @@ public class PearlsMovement : MonoBehaviour
 
         if (HasSelectedPearl())
         {
-            //Debug.Log("HasSelectedPearl");
             PearlMovement();
 
             if (goSelected.CompareTag("Untagged"))
@@ -51,8 +49,6 @@ public class PearlsMovement : MonoBehaviour
         }
         else
         {
-            //Debug.Log("HasNotSelectedPearl");
-
             if (goSelected != null)
             {
                 goSelected.GetComponent<Pearl>().SetPosToAnchorPos();
