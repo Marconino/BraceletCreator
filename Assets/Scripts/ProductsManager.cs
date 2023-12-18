@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -16,9 +17,16 @@ public class Products
 {
     public string title;
     public string handle;
+    public Variants[] variants;
+    public string pearlImageUrl;
+    public Sprite pearlImage;
+}
+
+public class Variants
+{
     public string price;
-    public string[] imagesUrl;
-    public Sprite[] images;
+    public string imageUrl;
+    public Sprite image;
 }
 
 public class ProductsManager : MonoBehaviour
@@ -101,7 +109,17 @@ public class ProductsManager : MonoBehaviour
             else
             {
                 collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<CollectionFromShopify>(webRequest.downloadHandler.text);
-                downloadQueue = new Queue<string>(collectionFromShopify.products.SelectMany(product => product.imagesUrl));
+                downloadQueue = new Queue<string>();
+
+                foreach (Products product in collectionFromShopify.products)
+                {
+                    foreach (Variants variant in product.variants)
+                    {
+                        downloadQueue.Enqueue(variant.imageUrl);
+                    }
+
+                    downloadQueue.Enqueue(product.pearlImageUrl);
+                }
 
                 for (int i = 0; i < maxConcurrentDownloads; i++)
                 {
@@ -148,16 +166,21 @@ public class ProductsManager : MonoBehaviour
                     return name == stoneName;
                 });
 
-                if (product.images == null)
-                    product.images = new Sprite[2];
-
                 Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                product.images[stoneType] = sprite;
-                
-                if (stoneType == 0)
+
+                if (stoneType < product.variants.Length)
                 {
-                    int childIndex = collectionFromShopify.products.FindIndex(p => p.title == product.title);
-                    productsGO.transform.GetChild(childIndex).GetComponent<Image>().sprite = sprite;
+                    product.variants[stoneType].image = sprite;
+
+                    if (stoneType == 0)
+                    {
+                        int childIndex = collectionFromShopify.products.FindIndex(p => p.title == product.title);
+                        productsGO.transform.GetChild(childIndex).GetComponent<Image>().sprite = sprite;
+                    }
+                }
+                else
+                {
+                    product.pearlImage = sprite;
                 }
             }
 
@@ -174,5 +197,34 @@ public class ProductsManager : MonoBehaviour
         string base64Image = Convert.ToBase64String(imageBytes);
         SendImageToJS(base64Image);
         Destroy(screenTexture);
+    }
+
+    public void FilterProduct(UIManager.FilterType _filterType)
+    {
+        int childIndex = 0;
+
+        collectionFromShopify.products.ForEach(product =>
+        {
+            Transform child = productsGO.transform.GetChild(childIndex);
+            Image productImage = child.GetComponent<Image>();
+
+            if (_filterType == UIManager.FilterType.Size10mm)
+            {
+                if (product.variants.Length > 1)
+                {
+                    productImage.sprite = product.variants[1].image;
+                }
+                else
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                child.gameObject.SetActive(true);
+                productImage.sprite = product.variants[0].image;
+            }
+            childIndex++;
+        });
     }
 }
