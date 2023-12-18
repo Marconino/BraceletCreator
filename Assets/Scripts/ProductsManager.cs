@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -199,7 +198,7 @@ public class ProductsManager : MonoBehaviour
         Destroy(screenTexture);
     }
 
-    public void FilterProduct(UIManager.FilterType _filterType)
+    public void FilterProduct(UIManager.FilterPearlSize _filterType)
     {
         int childIndex = 0;
 
@@ -208,7 +207,7 @@ public class ProductsManager : MonoBehaviour
             Transform child = productsGO.transform.GetChild(childIndex);
             Image productImage = child.GetComponent<Image>();
 
-            if (_filterType == UIManager.FilterType.Size10mm)
+            if (_filterType == UIManager.FilterPearlSize.SizePearl10mm)
             {
                 if (product.variants.Length > 1)
                 {

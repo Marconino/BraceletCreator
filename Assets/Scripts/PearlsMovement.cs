@@ -1,24 +1,31 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PearlsMovement : MonoBehaviour
 {
-    Vector3[] pearlsInitialPos;
     GameObject goSelected;
+    HorizontalLayoutGroup horizontalLayoutGroup;
+    Pearl[] pearls;
 
     void Start()
     {
-        pearlsInitialPos = new Vector3[transform.childCount];
+        pearls = new Pearl[transform.childCount];
 
-        for (int i = 0; i < pearlsInitialPos.Length; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             Transform child = transform.GetChild(i);
             Vector3 childPos = child.localPosition;
 
-            pearlsInitialPos[i] = childPos;
+            pearls[i] = child.GetComponent<Pearl>();
+            pearls[i].SetAnchorPos(childPos);
         }
+
+        horizontalLayoutGroup = GetComponent<HorizontalLayoutGroup>();
+        horizontalLayoutGroup.enabled = true;
     }
 
 
@@ -35,7 +42,7 @@ public class PearlsMovement : MonoBehaviour
 
     void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject?.transform.parent == transform)
+        if (EventSystem.current.currentSelectedGameObject && EventSystem.current.currentSelectedGameObject.transform.parent == transform)
             goSelected = EventSystem.current.currentSelectedGameObject;
 
         if (HasSelectedPearl())
