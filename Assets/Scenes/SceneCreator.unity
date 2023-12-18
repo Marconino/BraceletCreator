@@ -9749,10 +9749,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1562060668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d95c2e71bf163e409364c9034113b58, type: 3}
+  m_Script: {fileID: 11500000, guid: 2949261f17bb2bb4885679e31137ad56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logoStylenza: {fileID: 21300000, guid: 4d164f5423923ee4f8bbee77c325470d, type: 3}
+  logoStylenza: {fileID: 21300000, guid: 85285299ca13d8d4789f188172063f9d, type: 3}
   productsGO: {fileID: 1255298835}
   maxConcurrentDownloads: 5
 --- !u!1 &1594130425
@@ -12130,7 +12130,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1890817297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00b185a8efa681e42b34287dfd4fa548, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b31125393eb9da42abf8a473e1765e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   filter8mm: {fileID: 175677727}
