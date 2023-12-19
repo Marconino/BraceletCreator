@@ -226,4 +226,15 @@ public class ProductsManager : MonoBehaviour
             childIndex++;
         });
     }
+
+    public void FilterProductWithName(string _name)
+    {
+        int childIndex = 0;
+
+        collectionFromShopify.products.ForEach(_product =>
+        {
+            productsGO.transform.GetChild(childIndex).gameObject.SetActive(_product.title.Contains(_name));
+            childIndex++;
+        });
+    }
 }

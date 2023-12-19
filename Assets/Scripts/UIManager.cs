@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Toggle filter8mm;
     [SerializeField] Toggle filter10mm;
     [SerializeField] TMP_Dropdown filterWrist;
+    [SerializeField] TMP_InputField searchBar;
     [SerializeField] Transform bracelet;
     int nbPearls = 0;
 
@@ -81,5 +82,10 @@ public class UIManager : MonoBehaviour
         }
 
        StartCoroutine(PearlsMovement.Instance.UpdateAnchorPos());
+    }
+
+    public void FilterWithName()
+    {
+        ProductsManager.Instance.FilterProductWithName(searchBar.text);
     }
 }
