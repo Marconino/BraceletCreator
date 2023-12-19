@@ -7,10 +7,18 @@ using UnityEngine.UI;
 
 public class PearlsMovement : MonoBehaviour
 {
+    static PearlsMovement instance;
+    public static PearlsMovement Instance { get => instance; }
+
     GameObject goSelected;
     HorizontalLayoutGroup horizontalLayoutGroup;
     Pearl[] pearls;
 
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
     void Start()
     {
         pearls = new Pearl[transform.childCount];
@@ -24,10 +32,18 @@ public class PearlsMovement : MonoBehaviour
             pearls[i].SetAnchorPos(childPos);
         }
 
-        horizontalLayoutGroup = GetComponent<HorizontalLayoutGroup>();
-        horizontalLayoutGroup.enabled = true;
+        GetComponent<HorizontalLayoutGroup>().enabled = true;
     }
 
+    public IEnumerator UpdateAnchorPos()
+    {
+        yield return new WaitForEndOfFrame();
+
+        for (int i = 0; i < pearls.Length; i++)
+        {
+            pearls[i].SetAnchorPos(pearls[i].transform.localPosition);
+        }
+    }
 
     bool HasSelectedPearl()
     {

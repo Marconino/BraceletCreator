@@ -79,5 +79,7 @@ public class UIManager : MonoBehaviour
             child.GetComponent<CircleCollider2D>().radius = filter10mm.isOn ? 35 : 30;
             child.SetActive(i < nbPearls ? true : false);
         }
+
+       StartCoroutine(PearlsMovement.Instance.UpdateAnchorPos());
     }
 }
