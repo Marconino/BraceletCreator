@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -49,7 +50,14 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        imagePearlOnMouse = new GameObject("PearlOnMouse", typeof(Image));
+        imagePearlOnMouse = new GameObject("PearlOnMouse");
+        Image image = imagePearlOnMouse.AddComponent<Image>();
+        //BoxCollider2D boxCollider = imagePearlOnMouse.AddComponent<BoxCollider2D>();
+        //boxCollider.isTrigger = true;
+        //boxCollider.size = ((RectTransform)imagePearlOnMouse.transform).sizeDelta;
+        //Rigidbody2D rb = imagePearlOnMouse.AddComponent<Rigidbody2D>();
+        //rb.constraints = RigidbodyConstraints2D.FreezeAll;
+
         imagePearlOnMouse.transform.SetParent(canvas.transform);
         imagePearlOnMouse.transform.localPosition = Vector3.zero;
         imagePearlOnMouse.SetActive(false);
@@ -83,6 +91,7 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && imagePearlOnMouse.activeSelf)
         {
+            UpdatePearlImage();
             RemoveImagePearlOnMouse();
         }
     }
@@ -112,6 +121,7 @@ public class UIManager : MonoBehaviour
     {
         imagePearlOnMouse.SetActive(true);
         imagePearlOnMouse.GetComponent<Image>().sprite = _pearl;
+        imagePearlOnMouse.tag = "SelectedImagePearl";
     }
 
     public void RemoveImagePearlOnMouse()
@@ -119,5 +129,15 @@ public class UIManager : MonoBehaviour
         imagePearlOnMouse.SetActive(false);
         imagePearlOnMouse.transform.localPosition = Vector3.zero;
         imagePearlOnMouse.GetComponent<Image>().sprite = null;
+        imagePearlOnMouse.tag = "Untagged";
+    }
+
+    public void UpdatePearlImage()
+    {
+        Collider2D pearl = Physics2D.OverlapCircleAll(imagePearlOnMouse.transform.position, 35f)
+            .OrderBy(p => Mathf.Abs(p.transform.localPosition.x - imagePearlOnMouse.transform.localPosition.x)).FirstOrDefault();
+
+        if (pearl)
+            pearl.GetComponent<Image>().sprite = imagePearlOnMouse.GetComponent<Image>().sprite;
     }
 }

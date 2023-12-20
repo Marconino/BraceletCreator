@@ -11,7 +11,6 @@ public class PearlsMovement : MonoBehaviour
     public static PearlsMovement Instance { get => instance; }
 
     GameObject goSelected;
-    HorizontalLayoutGroup horizontalLayoutGroup;
     Pearl[] pearls;
 
     private void Awake()

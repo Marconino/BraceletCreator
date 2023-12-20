@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     bool isDragging = false;
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         isDragging = true;
@@ -22,6 +23,7 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
     public void OnEndDrag(PointerEventData eventData)
     {
         isDragging = false;
+        UIManager.Instance.UpdatePearlImage();
         UIManager.Instance.RemoveImagePearlOnMouse();
         Debug.Log("EndDrag");
     }
