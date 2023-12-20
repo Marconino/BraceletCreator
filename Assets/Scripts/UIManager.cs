@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
             filter8mm.interactable = true;
             filter8mm.isOn = false;
             filter10mm.interactable = false;
-            ProductsManager.Instance.FilterProduct(FilterPearlSize.SizePearl10mm);
+            ProductsManager.Instance.FilterProduct(FilterPearlSize.SizePearl10mm, searchBar.text);
             UpdateNbPearls();
         }
         else if (filter8mm.isOn && !filter10mm.interactable)
@@ -63,7 +63,7 @@ public class UIManager : MonoBehaviour
             filter10mm.interactable = true;
             filter10mm.isOn = false;
             filter8mm.interactable = false;
-            ProductsManager.Instance.FilterProduct(FilterPearlSize.SizePearl8mm);
+            ProductsManager.Instance.FilterProduct(FilterPearlSize.SizePearl8mm, searchBar.text);
             UpdateNbPearls();
         }
     }
@@ -86,6 +86,6 @@ public class UIManager : MonoBehaviour
 
     public void FilterWithName()
     {
-        ProductsManager.Instance.FilterProductWithName(searchBar.text);
+        ProductsManager.Instance.FilterProduct(filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm, searchBar.text);
     }
 }

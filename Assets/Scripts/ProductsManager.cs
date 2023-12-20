@@ -198,7 +198,7 @@ public class ProductsManager : MonoBehaviour
         Destroy(screenTexture);
     }
 
-    public void FilterProduct(UIManager.FilterPearlSize _filterType)
+    public void FilterProduct(UIManager.FilterPearlSize _filterType, string _name)
     {
         int childIndex = 0;
 
@@ -206,34 +206,20 @@ public class ProductsManager : MonoBehaviour
         {
             Transform child = productsGO.transform.GetChild(childIndex);
             Image productImage = child.GetComponent<Image>();
+            bool isActiveProduct = true;
 
-            if (_filterType == UIManager.FilterPearlSize.SizePearl10mm)
+            if (_filterType == UIManager.FilterPearlSize.SizePearl10mm && product.variants.Length == 1 || _name != string.Empty && !product.title.Contains(_name))
             {
-                if (product.variants.Length > 1)
-                {
-                    productImage.sprite = product.variants[1].image;
-                }
-                else
-                {
-                    child.gameObject.SetActive(false);
-                }
+                isActiveProduct = false;
             }
             else
             {
-                child.gameObject.SetActive(true);
-                productImage.sprite = product.variants[0].image;
+                productImage.sprite = product.variants[(int)_filterType].image;
             }
-            childIndex++;
-        });
-    }
 
-    public void FilterProductWithName(string _name)
-    {
-        int childIndex = 0;
+            if (child.gameObject.activeSelf != isActiveProduct)
+                child.gameObject.SetActive(isActiveProduct);
 
-        collectionFromShopify.products.ForEach(_product =>
-        {
-            productsGO.transform.GetChild(childIndex).gameObject.SetActive(_product.title.Contains(_name));
             childIndex++;
         });
     }
