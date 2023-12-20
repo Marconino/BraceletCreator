@@ -11834,6 +11834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b185a8efa681e42b34287dfd4fa548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 1758461673}
   filter8mm: {fileID: 175677727}
   filter10mm: {fileID: 1000184000}
   filterWrist: {fileID: 1962209438}

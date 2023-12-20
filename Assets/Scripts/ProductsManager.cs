@@ -34,7 +34,7 @@ public class ProductsManager : MonoBehaviour
     public static ProductsManager Instance { get => instance; }
 
     [DllImport("__Internal")]
-    private static extern void SendImageToJS(string _imageStr);
+    private static extern void SendImageToJS(string _imageStr, string _filename);
 
     [SerializeField] Sprite logoStylenza;
     [SerializeField] GameObject productsGO;
@@ -49,21 +49,14 @@ public class ProductsManager : MonoBehaviour
             instance = this;
     }
 
-    public void AddProductOnCart()
+    void AddProductOnCart(string _idBracelet)
     {
-        Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=47194252640588&quantity=5");
+        Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=" + _idBracelet + "&quantity=1");
     }
 
     void Start()
     {
         StartCoroutine(GetProductsCount("https://charremarc.fr/PHPShopify/count_products_collection.php"));
-    }
-    private void LateUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(ScreenShot());
-        }
     }
 
     IEnumerator GetProductsCount(string url)
@@ -87,6 +80,7 @@ public class ProductsManager : MonoBehaviour
                     Image image = child.AddComponent<Image>();
                     image.sprite = logoStylenza;
                     child.AddComponent<Button>().targetGraphic = image;
+                    child.AddComponent<ProductSelectable>();
                     child.transform.SetParent(productsGO.transform, false);
                     child.transform.localScale = Vector3.one;
                 }
@@ -108,6 +102,7 @@ public class ProductsManager : MonoBehaviour
             else
             {
                 collectionFromShopify = Newtonsoft.Json.JsonConvert.DeserializeObject<CollectionFromShopify>(webRequest.downloadHandler.text);
+
                 downloadQueue = new Queue<string>();
 
                 foreach (Products product in collectionFromShopify.products)
@@ -187,15 +182,56 @@ public class ProductsManager : MonoBehaviour
             StartNextDownloadImage();
         }
     }
+    public void AddCustomBraceletToCart()
+    {
+        StartCoroutine(CreateCustomBracelet());
+    }
+    IEnumerator CreateCustomBracelet()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/create_product.php?title=CustomTitle&handle=CustomHandle&collection=612807442764&description=Voici%20la%20description%20custom%20du%20produit.&price=10.95"))
+        {
+            yield return webRequest.SendWebRequest();
 
-    IEnumerator ScreenShot()
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur de téléchargement: " + webRequest.error);
+            }
+            else
+            { 
+                string[] idsBracelet = webRequest.downloadHandler.text.Split(',');
+
+                StartCoroutine(ScreenShot("salut", idsBracelet[0], idsBracelet[1]));         
+            }
+        }
+    }
+
+    IEnumerator AddCustomImageToCustomBracelet(string _filename, string _textImage, string _idBracelet, string _variantIdBracelet)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/add_image_product.php?filename=" + _filename + "&text=" + _textImage + "&id=" + _idBracelet))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur de téléchargement: " + webRequest.error);
+            }
+            else
+            {
+                AddProductOnCart(_variantIdBracelet);
+            }
+        }
+    }
+
+    IEnumerator ScreenShot(string _filename, string _idBracelet, string _variantIdBracelet)
     {
         yield return new WaitForEndOfFrame();
         Texture2D screenTexture = ScreenCapture.CaptureScreenshotAsTexture();
         byte[] imageBytes = screenTexture.EncodeToPNG();
         string base64Image = Convert.ToBase64String(imageBytes);
-        SendImageToJS(base64Image);
+        SendImageToJS(base64Image, _filename);
         Destroy(screenTexture);
+
+        StartCoroutine(AddCustomImageToCustomBracelet(_filename + ".png", "Image en cours de téléchargement...", _idBracelet, _variantIdBracelet));
     }
 
     public void FilterProduct(UIManager.FilterPearlSize _filterType, string _name)
@@ -222,5 +258,10 @@ public class ProductsManager : MonoBehaviour
 
             childIndex++;
         });
+    }
+
+    public Sprite GetPearlSpriteOfProduct(int _indexProduct)
+    {
+        return collectionFromShopify.products[_indexProduct].pearlImage;
     }
 }

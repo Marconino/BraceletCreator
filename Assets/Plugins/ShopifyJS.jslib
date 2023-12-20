@@ -1,8 +1,7 @@
 mergeInto(LibraryManager.library, {
-  SendImageToJS: function (str) {
-    console.log("Hello, world!");
-    
-    var base64 = UTF8ToString(str);
+  SendImageToJS: function (base64Image, filename) {
+
+    var base64 = UTF8ToString(base64Image);
     var bytes = atob(base64);
     var len = bytes.length;
     var buffer = new ArrayBuffer(len);
@@ -14,7 +13,8 @@ mergeInto(LibraryManager.library, {
     var imageBlob = new Blob([buffer], { type: 'image/png' });
 
     var formData = new FormData();
-    formData.append('image', imageBlob, 'screenshot.png');
+    var name = UTF8ToString(filename);
+    formData.append('image', imageBlob, name + '.png');
 
     fetch('https://charremarc.fr/Images/upload.php', {
         method: 'POST',

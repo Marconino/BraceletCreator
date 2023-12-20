@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -30,12 +31,15 @@ public class UIManager : MonoBehaviour
         SizeWrist24cm
     }
 
+    [SerializeField] Canvas canvas;
     [SerializeField] Toggle filter8mm;
     [SerializeField] Toggle filter10mm;
     [SerializeField] TMP_Dropdown filterWrist;
     [SerializeField] TMP_InputField searchBar;
     [SerializeField] Transform bracelet;
     int nbPearls = 0;
+
+    GameObject imagePearlOnMouse;
 
     void Awake()
     {
@@ -45,6 +49,11 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        imagePearlOnMouse = new GameObject("PearlOnMouse", typeof(Image));
+        imagePearlOnMouse.transform.SetParent(canvas.transform);
+        imagePearlOnMouse.transform.localPosition = Vector3.zero;
+        imagePearlOnMouse.SetActive(false);
+
         UpdateNbPearls();
     }
 
@@ -66,6 +75,16 @@ public class UIManager : MonoBehaviour
             ProductsManager.Instance.FilterProduct(FilterPearlSize.SizePearl8mm, searchBar.text);
             UpdateNbPearls();
         }
+
+        if (imagePearlOnMouse.activeSelf)
+        {
+            imagePearlOnMouse.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
+        }
+
+        if (Input.GetMouseButtonDown(0) && imagePearlOnMouse.activeSelf)
+        {
+            RemoveImagePearlOnMouse();
+        }
     }
 
     public void UpdateNbPearls()
@@ -81,11 +100,24 @@ public class UIManager : MonoBehaviour
             child.SetActive(i < nbPearls ? true : false);
         }
 
-       StartCoroutine(PearlsMovement.Instance.UpdateAnchorPos());
+        StartCoroutine(PearlsMovement.Instance.UpdateAnchorPos());
     }
 
     public void FilterWithName()
     {
         ProductsManager.Instance.FilterProduct(filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm, searchBar.text);
+    }
+
+    public void SetImagePearlOnMouse(Sprite _pearl)
+    {
+        imagePearlOnMouse.SetActive(true);
+        imagePearlOnMouse.GetComponent<Image>().sprite = _pearl;
+    }
+
+    public void RemoveImagePearlOnMouse()
+    {
+        imagePearlOnMouse.SetActive(false);
+        imagePearlOnMouse.transform.localPosition = Vector3.zero;
+        imagePearlOnMouse.GetComponent<Image>().sprite = null;
     }
 }
