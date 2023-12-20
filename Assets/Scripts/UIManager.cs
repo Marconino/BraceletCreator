@@ -108,8 +108,6 @@ public class UIManager : MonoBehaviour
             child.GetComponent<CircleCollider2D>().radius = filter10mm.isOn ? 35 : 30;
             child.SetActive(i < nbPearls ? true : false);
         }
-
-        StartCoroutine(PearlsMovement.Instance.UpdateAnchorPos());
     }
 
     public void FilterWithName()
@@ -138,6 +136,8 @@ public class UIManager : MonoBehaviour
             .OrderBy(p => Mathf.Abs(p.transform.localPosition.x - imagePearlOnMouse.transform.localPosition.x)).FirstOrDefault();
 
         if (pearl)
+        {
             pearl.GetComponent<Image>().sprite = imagePearlOnMouse.GetComponent<Image>().sprite;
+        }
     }
 }

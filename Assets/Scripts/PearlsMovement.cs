@@ -10,8 +10,8 @@ public class PearlsMovement : MonoBehaviour
     static PearlsMovement instance;
     public static PearlsMovement Instance { get => instance; }
 
+    HorizontalLayoutGroup layoutGroup;
     GameObject goSelected;
-    Pearl[] pearls;
 
     private void Awake()
     {
@@ -20,28 +20,7 @@ public class PearlsMovement : MonoBehaviour
     }
     void Start()
     {
-        pearls = new Pearl[transform.childCount];
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform child = transform.GetChild(i);
-            Vector3 childPos = child.localPosition;
-
-            pearls[i] = child.GetComponent<Pearl>();
-            pearls[i].SetAnchorPos(childPos);
-        }
-
-        GetComponent<HorizontalLayoutGroup>().enabled = true;
-    }
-
-    public IEnumerator UpdateAnchorPos()
-    {
-        yield return new WaitForEndOfFrame();
-
-        for (int i = 0; i < pearls.Length; i++)
-        {
-            pearls[i].SetAnchorPos(pearls[i].transform.localPosition);
-        }
+        layoutGroup = GetComponent<HorizontalLayoutGroup>();
     }
 
     bool HasSelectedPearl()
@@ -73,9 +52,9 @@ public class PearlsMovement : MonoBehaviour
         {
             if (goSelected != null)
             {
-                goSelected.GetComponent<Pearl>().SetPosToAnchorPos();
                 goSelected.tag = "Untagged";
                 goSelected = null;
+                layoutGroup.SetLayoutHorizontal();
             }
         }
     }
