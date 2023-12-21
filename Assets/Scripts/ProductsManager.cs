@@ -264,4 +264,14 @@ public class ProductsManager : MonoBehaviour
     {
         return collectionFromShopify.products[_indexProduct].pearlImage;
     }
+
+    public string GetPriceOfProduct(int _indexProduct, UIManager.FilterPearlSize _filterType)
+    {
+        return collectionFromShopify.products[_indexProduct].variants[(int)_filterType].price;
+    }  
+
+    public string GetTitleOfProduct(int _indexProduct)
+    {
+        return collectionFromShopify.products[_indexProduct].title;
+    }
 }
