@@ -96,6 +96,7 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            SwitchMenu();
             ArrangeInCircle();
         }
     }
@@ -224,5 +225,19 @@ public class UIManager : MonoBehaviour
             // Positionner le GameObject actif.
             bracelet.GetChild(i).localPosition = new Vector3(x, y, 0);
         }
+    }
+
+    void SwitchMenu()
+    {
+        for (int i = 2; i < canvas.transform.childCount - 1; i++) //start at 2 because background is the first go, bracelet is the second go
+        {
+            GameObject child = canvas.transform.GetChild(i).gameObject;
+            child.SetActive(!child.activeSelf);
+        }
+        Image image = bracelet.GetComponent<Image>();
+        image.enabled = !image.enabled;
+
+        float y = bracelet.transform.localPosition.y;
+        bracelet.transform.localPosition = new Vector3(0, y == -465f ? 145 : -465f, 145);
     }
 }
