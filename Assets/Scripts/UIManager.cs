@@ -36,10 +36,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] Toggle filter8mm;
     [SerializeField] Toggle filter10mm;
     [SerializeField] TMP_Dropdown filterWrist;
-    [SerializeField] TMP_InputField searchBar;
+    [SerializeField] InputField searchBar;
     [SerializeField] Button validateBracelet;
     [SerializeField] Transform bracelet;
     int nbPearls = 0;
+    bool isInCercle = false;
 
     GameObject imagePearlOnMouse;
     int currentProductIndex = -1;
@@ -92,12 +93,6 @@ public class UIManager : MonoBehaviour
         {
             UpdatePearl();
             RemoveImagePearlOnMouse();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SwitchMenu();
-            ArrangeInCircle();
         }
     }
 
@@ -177,7 +172,7 @@ public class UIManager : MonoBehaviour
     public void ResetBracelet()
     {
         validateBracelet.interactable = false;
-        for (int i = 0; i <  bracelet.childCount; i++)
+        for (int i = 0; i < bracelet.childCount; i++)
         {
             bracelet.GetChild(i).GetComponent<Pearl>().ResetPearl();
         }
@@ -189,7 +184,7 @@ public class UIManager : MonoBehaviour
         {
             Transform child = bracelet.GetChild(i);
 
-            if (!child.gameObject.activeSelf) 
+            if (!child.gameObject.activeSelf)
                 break;
 
             if (!child.GetComponent<Pearl>().HasValues())
@@ -203,6 +198,8 @@ public class UIManager : MonoBehaviour
         int childCount = bracelet.Cast<Transform>().Count(child => child.gameObject.activeSelf);
 
         bracelet.GetComponent<HorizontalLayoutGroup>().enabled = false;
+        bracelet.GetComponent<PearlsMovement>().enabled = false;
+
         float distanceBetweenPearls = 80f;
         // Calculer le périmètre du cercle nécessaire pour espacer les objets.
         float perimeter = childCount * distanceBetweenPearls;
@@ -227,8 +224,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SwitchMenu()
+    public void SwitchMenu()
     {
+        if (isInCercle)
+        {
+            bracelet.GetComponent<HorizontalLayoutGroup>().enabled = true;
+            bracelet.GetComponent<PearlsMovement>().enabled = true;
+        }
+        else
+            ArrangeInCircle();
+
+        isInCercle = !isInCercle;
+
         for (int i = 2; i < canvas.transform.childCount - 1; i++) //start at 2 because background is the first go, bracelet is the second go
         {
             GameObject child = canvas.transform.GetChild(i).gameObject;
@@ -239,5 +246,11 @@ public class UIManager : MonoBehaviour
 
         float y = bracelet.transform.localPosition.y;
         bracelet.transform.localPosition = new Vector3(0, y == -465f ? 145 : -465f, 145);
+    }
+
+    public Pearl[] GetPearlsInCurrentBracelet()
+    {
+        return bracelet.Cast<Transform>().Where(child => child.gameObject.activeSelf).
+            Select(child => child.GetComponent<Pearl>()).ToArray();
     }
 }

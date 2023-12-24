@@ -26,14 +26,12 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
         UIManager.Instance.SetCurrentProductIndex(transform.GetSiblingIndex());
         UIManager.Instance.UpdatePearl();
         UIManager.Instance.RemoveImagePearlOnMouse();
-        Debug.Log("EndDrag");
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!isDragging)
         {
-            Debug.Log("Click");
             Sprite pearl = ProductsManager.Instance.GetPearlSpriteOfProduct(transform.GetSiblingIndex());
             UIManager.Instance.SetImagePearlOnMouse(pearl);
             UIManager.Instance.SetCurrentProductIndex(transform.GetSiblingIndex());

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -184,11 +185,18 @@ public class ProductsManager : MonoBehaviour
     }
     public void AddCustomBraceletToCart()
     {
-        StartCoroutine(CreateCustomBracelet());
+        Pearl[] pearls = UIManager.Instance.GetPearlsInCurrentBracelet();
+        
+        string title = "Slt";
+        string handle = "Cc";
+        string description = string.Join("<br>", pearls.Select(p => p.title));
+        string price = pearls.Select(p => float.Parse(p.price, CultureInfo.InvariantCulture)).Sum().ToString(CultureInfo.InvariantCulture);
+
+        StartCoroutine(CreateCustomBracelet(title, handle, description, price));
     }
-    IEnumerator CreateCustomBracelet()
+    IEnumerator CreateCustomBracelet(string _title, string _handle, string _description, string _price)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/create_product.php?title=CustomTitle&handle=CustomHandle&collection=612807442764&description=Voici%20la%20description%20custom%20du%20produit.&price=10.95"))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/create_product.php?title=" + _title + "&handle=" + _handle + "&collection=612807442764&description=" + _description + "&price=" + _price))
         {
             yield return webRequest.SendWebRequest();
 
@@ -244,7 +252,7 @@ public class ProductsManager : MonoBehaviour
             Image productImage = child.GetComponent<Image>();
             bool isActiveProduct = true;
 
-            if (_filterType == UIManager.FilterPearlSize.SizePearl10mm && product.variants.Length == 1 || _name != string.Empty && !product.title.Contains(_name))
+            if (_filterType == UIManager.FilterPearlSize.SizePearl10mm && product.variants.Length == 1 || _name != string.Empty && !product.title.ToLower().StartsWith(_name.ToLower()))
             {
                 isActiveProduct = false;
             }
