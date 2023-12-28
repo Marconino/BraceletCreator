@@ -159,14 +159,8 @@ public class UIManager : MonoBehaviour
         if (currentProductIndex != -1)
             currentProductIndex = -1;
 
-        if (IsTheBraceletFinished())
-        {
-            validateBracelet.interactable = true;
-        }
-        else
-        {
-            validateBracelet.interactable = false;
-        }
+
+        validateBracelet.interactable = IsTheBraceletFinished() ? true : false;
     }
 
     public void ResetBracelet()
