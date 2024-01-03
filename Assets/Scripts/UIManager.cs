@@ -91,7 +91,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateNbPearls()
     {
-        ((RectTransform)imagePearlOnMouse.transform).sizeDelta = filter8mm.isOn ? new Vector2(30, 30) : new Vector2(40, 40);
+        ((RectTransform)imagePearlOnMouse.transform).sizeDelta = filter8mm.isOn ? new Vector2(55, 55) : new Vector2(68, 68);
 
         int baseValue = filter8mm.isOn ? 18 : 14;
         int nbPearls = baseValue + filterWrist.value;
