@@ -39,8 +39,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] InputField searchBar;
     [SerializeField] Button validateBracelet;
     [SerializeField] Transform bracelet;
-    [SerializeField] Sprite pearlSprite;
-
     bool isInCercle = false;
 
     GameObject imagePearlOnMouse;
