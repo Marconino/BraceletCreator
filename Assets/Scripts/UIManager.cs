@@ -54,7 +54,6 @@ public class UIManager : MonoBehaviour
         imagePearlOnMouse = new GameObject("PearlOnMouse");
         Image image = imagePearlOnMouse.AddComponent<Image>();
 
-        ((RectTransform)imagePearlOnMouse.transform).sizeDelta = new Vector2(30, 30);
         imagePearlOnMouse.transform.SetParent(canvas.transform);
         imagePearlOnMouse.transform.localPosition = Vector3.zero;
         imagePearlOnMouse.SetActive(false);
