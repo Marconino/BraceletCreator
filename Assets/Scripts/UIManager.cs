@@ -39,11 +39,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] InputField searchBar;
     [SerializeField] Button validateBracelet;
     [SerializeField] Transform bracelet;
-    int nbPearls = 0;
+    [SerializeField] Sprite pearlSprite;
+
     bool isInCercle = false;
 
     GameObject imagePearlOnMouse;
-    int currentProductIndex = -1;
 
     void Awake()
     {
@@ -88,35 +88,22 @@ public class UIManager : MonoBehaviour
         {
             imagePearlOnMouse.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         }
-
-        if (Input.GetMouseButtonDown(0) && imagePearlOnMouse.activeSelf)
-        {
-            UpdatePearl();
-            RemoveImagePearlOnMouse();
-        }
     }
 
     public void UpdateNbPearls()
     {
         int baseValue = filter8mm.isOn ? 18 : 14;
-        nbPearls = baseValue + filterWrist.value;
+        int nbPearls = baseValue + filterWrist.value;
 
         for (int i = 0; i < bracelet.childCount; i++)
         {
             GameObject child = bracelet.GetChild(i).gameObject;
-            ((RectTransform)child.transform).sizeDelta = filter10mm.isOn ? new Vector2(80, 80) : new Vector2(68, 68);
+            ((RectTransform)child.transform).sizeDelta = filter10mm.isOn ? new Vector2(68, 68) : new Vector2(55, 55);
             child.GetComponent<CircleCollider2D>().radius = filter10mm.isOn ? 35 : 30;
             child.SetActive(i < nbPearls ? true : false);
         }
 
-        if (IsTheBraceletFinished())
-        {
-            validateBracelet.interactable = true;
-        }
-        else
-        {
-            validateBracelet.interactable = false;
-        }
+        validateBracelet.interactable = IsTheBraceletFinished();
     }
 
     public void FilterWithName()
@@ -139,28 +126,34 @@ public class UIManager : MonoBehaviour
         imagePearlOnMouse.tag = "Untagged";
     }
 
-    public void SetCurrentProductIndex(int _indexProduct)
+    public void UpdateFirstAvailablePearl(int _currentProductIndex)
     {
-        currentProductIndex = _indexProduct;
+        string title = ProductsManager.Instance.GetTitleOfProduct(_currentProductIndex);
+        string price = ProductsManager.Instance.GetPriceOfProduct(_currentProductIndex, filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm);
+        Sprite sprite = ProductsManager.Instance.GetPearlSpriteOfProduct(_currentProductIndex);
+
+        bracelet.Cast<Transform>().FirstOrDefault(child => child.gameObject.activeSelf && !child.GetComponent<Pearl>().HasValues())
+            ?.GetComponent<Pearl>().SetPearlValues(title, price, sprite);
+
+        validateBracelet.interactable = IsTheBraceletFinished();
     }
 
-    public void UpdatePearl()
+    public void UpdatePearl(int _currentProductIndex)
     {
         Collider2D pearlCollider = Physics2D.OverlapCircleAll(imagePearlOnMouse.transform.position, 35f)
             .OrderBy(p => Mathf.Abs(p.transform.localPosition.x - imagePearlOnMouse.transform.localPosition.x)).FirstOrDefault();
 
         if (pearlCollider)
         {
-            string title = ProductsManager.Instance.GetTitleOfProduct(currentProductIndex);
-            string price = ProductsManager.Instance.GetPriceOfProduct(currentProductIndex, filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm);
+            string title = ProductsManager.Instance.GetTitleOfProduct(_currentProductIndex);
+            string price = ProductsManager.Instance.GetPriceOfProduct(_currentProductIndex, filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm);
             pearlCollider.GetComponent<Pearl>().SetPearlValues(title, price, imagePearlOnMouse.GetComponent<Image>().sprite);
         }
 
-        if (currentProductIndex != -1)
-            currentProductIndex = -1;
+        if (_currentProductIndex != -1)
+            _currentProductIndex = -1;
 
-
-        validateBracelet.interactable = IsTheBraceletFinished() ? true : false;
+        validateBracelet.interactable = IsTheBraceletFinished();
     }
 
     public void ResetBracelet()
@@ -230,10 +223,19 @@ public class UIManager : MonoBehaviour
 
         isInCercle = !isInCercle;
 
+        string firstTitlePearl = bracelet.Cast<Transform>().First().GetComponent<Pearl>().GetTitle();
+        bool currentBraceletAlreadyExistInShop = bracelet.Cast<Transform>().Where(child => child.gameObject.activeSelf).All(child => child.GetComponent<Pearl>().GetTitle() == firstTitlePearl);
+
         for (int i = 2; i < canvas.transform.childCount - 1; i++) //start at 2 because background is the first go, bracelet is the second go
         {
             GameObject child = canvas.transform.GetChild(i).gameObject;
-            child.SetActive(!child.activeSelf);
+
+            if ((child.name == "AddProductToCart" && !currentBraceletAlreadyExistInShop) ||
+                (child.name == "GetProductFromShop" && currentBraceletAlreadyExistInShop) ||
+                (child.name != "AddProductToCart" && child.name != "GetProductFromShop"))
+            {
+                child.SetActive(!child.activeSelf);
+            }
         }
         Image image = bracelet.GetComponent<Image>();
         image.enabled = !image.enabled;

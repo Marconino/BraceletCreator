@@ -8,13 +8,17 @@ public class Pearl : MonoBehaviour
 {
     public string title;
     public string price;
-    Image image;
+    Image currImage;
+    Image baseImage;
+    float pixelPerUnitMultiplier = 0f;
 
     private void Start()
     {
         title = string.Empty;
         price = string.Empty;
-        image = GetComponent<Image>();
+        currImage = GetComponent<Image>();
+        baseImage = currImage;
+        pixelPerUnitMultiplier = baseImage.pixelsPerUnitMultiplier;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -29,18 +33,25 @@ public class Pearl : MonoBehaviour
     {
         title = _title;
         price = _price;
-        image.sprite = _sprite;
+        currImage.sprite = _sprite;
     }
 
     public void ResetPearl()
     {
         title = string.Empty;
         price = string.Empty;
-        image.sprite = null;
+        currImage.sprite = null;
+        currImage.sprite = baseImage.sprite;
+        currImage.pixelsPerUnitMultiplier = pixelPerUnitMultiplier;
     }
 
     public bool HasValues()
     {
-        return title != string.Empty && price != string.Empty && image.sprite != null;
+        return title != string.Empty && price != string.Empty;
+    }
+
+    public string GetTitle()
+    {
+        return title;
     }
 }
