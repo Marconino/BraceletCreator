@@ -54,6 +54,7 @@ public class UIManager : MonoBehaviour
         imagePearlOnMouse = new GameObject("PearlOnMouse");
         Image image = imagePearlOnMouse.AddComponent<Image>();
 
+        ((RectTransform)imagePearlOnMouse.transform).sizeDelta = new Vector2(30, 30);
         imagePearlOnMouse.transform.SetParent(canvas.transform);
         imagePearlOnMouse.transform.localPosition = Vector3.zero;
         imagePearlOnMouse.SetActive(false);
@@ -90,6 +91,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateNbPearls()
     {
+        ((RectTransform)imagePearlOnMouse.transform).sizeDelta = filter8mm.isOn ? new Vector2(30, 30) : new Vector2(40, 40);
+
         int baseValue = filter8mm.isOn ? 18 : 14;
         int nbPearls = baseValue + filterWrist.value;
 
