@@ -323,6 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &6455900
 MonoBehaviour:
@@ -539,6 +540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &40249235
 MonoBehaviour:
@@ -755,6 +757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &40961512
 MonoBehaviour:
@@ -971,6 +974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &53550087
 MonoBehaviour:
@@ -1296,6 +1300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &101227282
 MonoBehaviour:
@@ -1396,7 +1401,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114400117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1890817300}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: GetProductFromShop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &114400117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1650,6 +1667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &122694548
 MonoBehaviour:
@@ -2461,6 +2479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &387093727
 MonoBehaviour:
@@ -2805,6 +2824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &610240916
 MonoBehaviour:
@@ -3224,6 +3244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &675650112
 MonoBehaviour:
@@ -3533,6 +3554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &703309239
 MonoBehaviour:
@@ -3843,6 +3865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &710397246
 MonoBehaviour:
@@ -4059,6 +4082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &713952090
 MonoBehaviour:
@@ -4275,6 +4299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &715054043
 MonoBehaviour:
@@ -4491,6 +4516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &735622059
 MonoBehaviour:
@@ -4937,6 +4963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &841569107
 MonoBehaviour:
@@ -5776,6 +5803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &938930642
 MonoBehaviour:
@@ -6219,6 +6247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &981915434
 MonoBehaviour:
@@ -6534,6 +6563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1033907808
 MonoBehaviour:
@@ -6750,6 +6780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1064099201
 MonoBehaviour:
@@ -6966,6 +6997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1087757831
 MonoBehaviour:
@@ -7141,7 +7173,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1088424486}
   m_HandleRect: {fileID: 1088424485}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7689,6 +7721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1359591160
 MonoBehaviour:
@@ -8149,6 +8182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1433549105
 MonoBehaviour:
@@ -8496,6 +8530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   logoStylenza: {fileID: 21300000, guid: 03c5e8baa72806b488ef778797dcd9c2, type: 3}
   productsGO: {fileID: 1255298835}
+  UIProductPrefab: {fileID: 7991932618201570281, guid: 20d058e02b16b8a4786e0aac36e74185, type: 3}
   maxConcurrentDownloads: 5
 --- !u!1 &1608398827
 GameObject:
@@ -8773,6 +8808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1653064030
 MonoBehaviour:
@@ -9139,6 +9175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1679601622
 MonoBehaviour:
@@ -9468,6 +9505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1735914535
 MonoBehaviour:
@@ -9875,6 +9913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &1784465663
 MonoBehaviour:
@@ -10072,7 +10111,6 @@ MonoBehaviour:
   searchBar: {fileID: 889142572}
   validateBracelet: {fileID: 1507519610}
   bracelet: {fileID: 846507281}
-  pearlSprite: {fileID: 21300000, guid: 3d3453c6a018a3244a441df0335d53a0, type: 3}
 --- !u!1 &1960836422
 GameObject:
   m_ObjectHideFlags: 0
@@ -10703,6 +10741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &2036227517
 MonoBehaviour:
@@ -11204,6 +11243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: 
+  handle: 
   price: 
 --- !u!114 &2117329207
 MonoBehaviour:

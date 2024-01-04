@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Pearl : MonoBehaviour
 {
     public string title;
+    public string handle;
     public string price;
     Image currImage;
     Sprite baseSprite;
@@ -27,9 +28,10 @@ public class Pearl : MonoBehaviour
         }
     }
 
-    public void SetPearlValues(string _title, string _price, Sprite _sprite)
+    public void SetPearlValues(string _title, string _handle, string _price, Sprite _sprite)
     {
         title = _title;
+        handle = _handle;
         price = _price;
         currImage.sprite = _sprite;
     }
@@ -37,6 +39,7 @@ public class Pearl : MonoBehaviour
     public void ResetPearl()
     {
         title = string.Empty;
+        handle = string.Empty;
         price = string.Empty;
         //currImage.sprite = null;
         currImage.sprite = baseSprite;
@@ -45,11 +48,16 @@ public class Pearl : MonoBehaviour
 
     public bool HasValues()
     {
-        return title != string.Empty && price != string.Empty;
+        return title != string.Empty && handle != string.Empty && price != string.Empty;
     }
 
     public string GetTitle()
     {
         return title;
+    } 
+
+    public string GetHandle()
+    {
+        return handle;
     }
 }

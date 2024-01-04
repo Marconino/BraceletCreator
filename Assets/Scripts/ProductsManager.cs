@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -39,6 +41,7 @@ public class ProductsManager : MonoBehaviour
 
     [SerializeField] Sprite logoStylenza;
     [SerializeField] GameObject productsGO;
+    [SerializeField] GameObject UIProductPrefab;
     CollectionFromShopify collectionFromShopify;
 
     [SerializeField] int maxConcurrentDownloads = 5;
@@ -53,6 +56,27 @@ public class ProductsManager : MonoBehaviour
     void AddProductOnCart(string _idBracelet)
     {
         Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=" + _idBracelet + "&quantity=1");
+    }
+
+    void GetProductFromShop(string _handleBracelet)
+    {
+        Application.OpenURL("https://stylenzamineraux.fr/products/" + _handleBracelet);
+    }
+    public IEnumerator GetHandleBraceletFromShop(string _handle)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/get_bracelet_from_shop.php?filter=" + _handle))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur de téléchargement: " + webRequest.error);
+            }
+            else
+            {
+                GetProductFromShop(webRequest.downloadHandler.text);
+            }
+        }
     }
 
     void Start()
@@ -84,6 +108,8 @@ public class ProductsManager : MonoBehaviour
                     child.AddComponent<ProductSelectable>();
                     child.transform.SetParent(productsGO.transform, false);
                     child.transform.localScale = Vector3.one;
+
+                    Instantiate(UIProductPrefab, child.transform, false);
                 }
 
                 StartCoroutine(GetProducts("https://charremarc.fr/PHPShopify/get_products_collection.php?count=" + nbProducts));
@@ -170,7 +196,12 @@ public class ProductsManager : MonoBehaviour
                     if (stoneType == 0)
                     {
                         int childIndex = collectionFromShopify.products.FindIndex(p => p.title == product.title);
-                        productsGO.transform.GetChild(childIndex).GetComponent<Image>().sprite = sprite;
+                        Transform productTransform = productsGO.transform.GetChild(childIndex);
+                        productTransform.GetComponent<Image>().sprite = sprite;
+
+                        Transform productUI = productTransform.GetChild(0);
+                        productUI.GetChild(0).GetComponent<TMP_Text>().text = product.title;
+                        productUI.GetChild(1).GetComponent<TMP_Text>().text = product.variants[stoneType].price + " €";
                     }
                 }
                 else
@@ -186,7 +217,7 @@ public class ProductsManager : MonoBehaviour
     public void AddCustomBraceletToCart()
     {
         Pearl[] pearls = UIManager.Instance.GetPearlsInCurrentBracelet();
-        
+
         string title = "Slt";
         string handle = "Cc";
         string description = string.Join("<br>", pearls.Select(p => p.title));
@@ -205,10 +236,10 @@ public class ProductsManager : MonoBehaviour
                 Debug.LogError("Erreur de téléchargement: " + webRequest.error);
             }
             else
-            { 
+            {
                 string[] idsBracelet = webRequest.downloadHandler.text.Split(',');
 
-                StartCoroutine(ScreenShot("salut", idsBracelet[0], idsBracelet[1]));         
+                StartCoroutine(ScreenShot("salut", idsBracelet[0], idsBracelet[1]));
             }
         }
     }
@@ -258,6 +289,8 @@ public class ProductsManager : MonoBehaviour
             }
             else
             {
+                Transform productUI = child.GetChild(0);
+                productUI.GetChild(1).GetComponent<TMP_Text>().text = product.variants[(int)_filterType].price + " €";
                 productImage.sprite = product.variants[(int)_filterType].image;
             }
 
@@ -276,10 +309,15 @@ public class ProductsManager : MonoBehaviour
     public string GetPriceOfProduct(int _indexProduct, UIManager.FilterPearlSize _filterType)
     {
         return collectionFromShopify.products[_indexProduct].variants[(int)_filterType].price;
-    }  
+    }
 
     public string GetTitleOfProduct(int _indexProduct)
     {
         return collectionFromShopify.products[_indexProduct].title;
+    }
+
+    public string GetHandleOfProduct(int _indexProduct)
+    {
+        return collectionFromShopify.products[_indexProduct].handle;
     }
 }
