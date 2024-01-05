@@ -229,7 +229,7 @@ public class UIManager : MonoBehaviour
 
         string firstHandlePearl = bracelet.Cast<Transform>().First().GetComponent<Pearl>().GetHandle();
         bool currentBraceletAlreadyExistInShop = bracelet.Cast<Transform>().Where(child => child.gameObject.activeSelf).All(child => child.GetComponent<Pearl>().GetHandle() == firstHandlePearl);
-        handleForGetBraceletFromShop = currentBraceletAlreadyExistInShop ? firstHandlePearl : string.Empty;
+        handleForGetBraceletFromShop = currentBraceletAlreadyExistInShop ? NormalizedHandlePearl(firstHandlePearl) : string.Empty;
 
         for (int i = 2; i < canvas.transform.childCount - 1; i++) //start at 2 because background is the first go, bracelet is the second go
         {
@@ -247,6 +247,20 @@ public class UIManager : MonoBehaviour
 
         float y = bracelet.transform.localPosition.y;
         bracelet.transform.localPosition = new Vector3(0, y == -465f ? 145 : -465f, 145);
+    }
+    
+    string NormalizedHandlePearl(string _handlePearl)
+    {
+        if (_handlePearl.Contains("pierre-de-lune"))
+        {
+            _handlePearl = "pierre-de-lune";
+        }
+        else if (_handlePearl == "obsidienne-mouchetee")
+        {
+            _handlePearl = "obsidienne-neige";
+        }
+
+        return _handlePearl;
     }
 
     public Pearl[] GetPearlsInCurrentBracelet()
