@@ -219,8 +219,8 @@ public class ProductsManager : MonoBehaviour
     {
         Pearl[] pearls = UIManager.Instance.GetPearlsInCurrentBracelet();
 
-        string title = "Slt";
-        string handle = "Cc";
+        string title = "Bracelet personnalisé";
+        string handle = "bracelet-personnalise";
         string description = string.Join("<br>", pearls.Select(p => p.title));
         string price = pearls.Select(p => float.Parse(p.price, CultureInfo.InvariantCulture)).Sum().ToString(CultureInfo.InvariantCulture);
 
@@ -240,7 +240,8 @@ public class ProductsManager : MonoBehaviour
             {
                 string[] idsBracelet = webRequest.downloadHandler.text.Split(',');
 
-                StartCoroutine(ScreenShot("salut", idsBracelet[0], idsBracelet[1]));
+                string randomName = DateTime.Now.Ticks.ToString();
+                StartCoroutine(ScreenShot(randomName, idsBracelet[0], idsBracelet[1]));
             }
         }
     }
@@ -257,7 +258,7 @@ public class ProductsManager : MonoBehaviour
             }
             else
             {
-                AddProductOnCart(_variantIdBracelet);
+                //AddProductOnCart(_variantIdBracelet);
             }
         }
     }
@@ -324,6 +325,14 @@ public class ProductsManager : MonoBehaviour
 
     public string GetKeywordsOfProduct(int _indexProduct)
     {
-        return string.Join(",", collectionFromShopify.products[_indexProduct].tags);
+        if (collectionFromShopify == null || collectionFromShopify.products.Count < _indexProduct)
+            return string.Empty;
+
+        string[] tags = collectionFromShopify.products[_indexProduct].tags;
+
+        if (tags == null)
+            return string.Empty;
+
+        return string.Join(", ", tags.Select((tag, index) => index == 0 ? tag : tag.ToLower()));
     }
 }
