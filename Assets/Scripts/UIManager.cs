@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -40,6 +41,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button validateBracelet;
     [SerializeField] Transform bracelet;
     [SerializeField] GameObject popupPrefab;
+    [SerializeField] GameObject warningFilter;
+    FilterPearlSize currentFilter = FilterPearlSize.SizePearl8mm;
 
     bool isInCercle = false;
     string handleForGetBraceletFromShop = string.Empty;
@@ -47,6 +50,8 @@ public class UIManager : MonoBehaviour
     GameObject imagePearlOnMouse;
     PopUp popUpOnMouse;
 
+    bool canDisplayWarningFilter = true;
+    bool IsWarningFilterDisplayed = false;
     void Awake()
     {
         if (instance == null)
@@ -72,25 +77,38 @@ public class UIManager : MonoBehaviour
         UpdateNbPearls();
     }
 
-    void Update()
+    void UpdateCurrentFilter()
     {
+        bool canFilter = false;
         if (filter10mm.isOn && !filter8mm.interactable)
         {
+            canFilter = true;
             filter8mm.interactable = true;
             filter8mm.isOn = false;
             filter10mm.interactable = false;
-            ProductsManager.Instance.FilterProduct(FilterPearlSize.SizePearl10mm, searchBar.text);
-            ResetBracelet();
-            UpdateNbPearls();
         }
         else if (filter8mm.isOn && !filter10mm.interactable)
         {
+            canFilter = true;
             filter10mm.interactable = true;
             filter10mm.isOn = false;
             filter8mm.interactable = false;
-            ProductsManager.Instance.FilterProduct(FilterPearlSize.SizePearl8mm, searchBar.text);
+        }
+
+        if (canFilter)
+        {
+            currentFilter = currentFilter == FilterPearlSize.SizePearl8mm ? FilterPearlSize.SizePearl10mm : FilterPearlSize.SizePearl8mm;
+            ProductsManager.Instance.FilterProduct(currentFilter, searchBar.text);
             ResetBracelet();
             UpdateNbPearls();
+        }
+    }
+
+    void Update()
+    {
+        if (!IsWarningFilterDisplayed)
+        {
+            UpdateCurrentFilter();
         }
 
         if (imagePearlOnMouse.activeSelf)
@@ -99,7 +117,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateNbPearls()
+    void UpdateNbPearls()
     {
         ((RectTransform)imagePearlOnMouse.transform).sizeDelta = filter8mm.isOn ? new Vector2(55, 55) : new Vector2(68, 68);
 
@@ -117,9 +135,37 @@ public class UIManager : MonoBehaviour
         validateBracelet.interactable = IsTheBraceletFinished();
     }
 
+    public void DisplayWarningFilter()
+    {
+        if (canDisplayWarningFilter && filter8mm.isOn && filter10mm.isOn)
+        {
+            warningFilter.SetActive(true);
+            IsWarningFilterDisplayed = true;
+        }
+    }
+
+    public void EndOfWarning(string _state)
+    {
+        if (_state == "Yes")
+        {
+            Toggle toggle = warningFilter.transform.GetChild(0).GetChild(3).GetComponent<Toggle>();
+            canDisplayWarningFilter = !toggle.isOn;
+        }
+        else if (_state == "No")
+        {
+            if (currentFilter == FilterPearlSize.SizePearl8mm)
+                filter10mm.isOn = false;
+            else
+                filter8mm.isOn = false;
+        }
+
+        warningFilter.SetActive(false);
+        IsWarningFilterDisplayed = false;
+    }
+
     public void FilterWithName()
     {
-        ProductsManager.Instance.FilterProduct(filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm, searchBar.text);
+        ProductsManager.Instance.FilterProduct(currentFilter, searchBar.text);
     }
 
     public void SetImagePearlOnMouse(Sprite _pearl)
@@ -145,7 +191,7 @@ public class UIManager : MonoBehaviour
     {
         string title = ProductsManager.Instance.GetTitleOfProduct(_currentProductIndex);
         string handle = ProductsManager.Instance.GetHandleOfProduct(_currentProductIndex);
-        string price = ProductsManager.Instance.GetPriceOfProduct(_currentProductIndex, filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm);
+        string price = ProductsManager.Instance.GetPriceOfProduct(_currentProductIndex, currentFilter);
         Sprite sprite = ProductsManager.Instance.GetPearlSpriteOfProduct(_currentProductIndex);
 
         bracelet.Cast<Transform>().FirstOrDefault(child => child.gameObject.activeSelf && !child.GetComponent<Pearl>().HasValues())
@@ -163,8 +209,8 @@ public class UIManager : MonoBehaviour
         {
             string title = ProductsManager.Instance.GetTitleOfProduct(_currentProductIndex);
             string handle = ProductsManager.Instance.GetHandleOfProduct(_currentProductIndex);
-            string price = ProductsManager.Instance.GetPriceOfProduct(_currentProductIndex, filter8mm.isOn ? FilterPearlSize.SizePearl8mm : FilterPearlSize.SizePearl10mm);
-            pearlCollider.GetComponent<Pearl>().SetPearlValues(title, handle,  price, imagePearlOnMouse.GetComponent<Image>().sprite);
+            string price = ProductsManager.Instance.GetPriceOfProduct(_currentProductIndex, currentFilter);
+            pearlCollider.GetComponent<Pearl>().SetPearlValues(title, handle, price, imagePearlOnMouse.GetComponent<Image>().sprite);
         }
 
         if (_currentProductIndex != -1)
@@ -244,7 +290,7 @@ public class UIManager : MonoBehaviour
         bool currentBraceletAlreadyExistInShop = bracelet.Cast<Transform>().Where(child => child.gameObject.activeSelf).All(child => child.GetComponent<Pearl>().GetHandle() == firstHandlePearl);
         handleForGetBraceletFromShop = currentBraceletAlreadyExistInShop ? NormalizedHandlePearl(firstHandlePearl) : string.Empty;
 
-        for (int i = 2; i < canvas.transform.childCount - 1; i++) //start at 2 because background is the first go, bracelet is the second go
+        for (int i = 2; i < canvas.transform.childCount - 2; i++) //start at 2 because background is the first go, bracelet is the second go
         {
             GameObject child = canvas.transform.GetChild(i).gameObject;
 
@@ -261,7 +307,7 @@ public class UIManager : MonoBehaviour
         float y = bracelet.transform.localPosition.y;
         bracelet.transform.localPosition = new Vector3(0, y == -465f ? 145 : -465f, 145);
     }
-    
+
     string NormalizedHandlePearl(string _handlePearl)
     {
         if (_handlePearl.Contains("pierre-de-lune"))
@@ -292,7 +338,7 @@ public class UIManager : MonoBehaviour
         imagePearlOnMouse.SetActive(true);
         popUpOnMouse.gameObject.SetActive(true);
         popUpOnMouse.UpdateText(_keywords);
-    }   
+    }
 
     public void ClosePopupOnMouse()
     {
