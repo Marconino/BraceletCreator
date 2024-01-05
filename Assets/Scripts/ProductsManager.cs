@@ -19,6 +19,7 @@ public class Products
 {
     public string title;
     public string handle;
+    public string[] tags;
     public Variants[] variants;
     public string pearlImageUrl;
     public Sprite pearlImage;
@@ -319,5 +320,10 @@ public class ProductsManager : MonoBehaviour
     public string GetHandleOfProduct(int _indexProduct)
     {
         return collectionFromShopify.products[_indexProduct].handle;
+    }
+
+    public string GetKeywordsOfProduct(int _indexProduct)
+    {
+        return string.Join(",", collectionFromShopify.products[_indexProduct].tags);
     }
 }

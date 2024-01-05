@@ -39,10 +39,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] InputField searchBar;
     [SerializeField] Button validateBracelet;
     [SerializeField] Transform bracelet;
+    [SerializeField] GameObject popupPrefab;
+
     bool isInCercle = false;
     string handleForGetBraceletFromShop = string.Empty;
 
     GameObject imagePearlOnMouse;
+    PopUp popUpOnMouse;
 
     void Awake()
     {
@@ -54,11 +57,17 @@ public class UIManager : MonoBehaviour
     {
         imagePearlOnMouse = new GameObject("PearlOnMouse");
         Image image = imagePearlOnMouse.AddComponent<Image>();
+        image.raycastTarget = false;
+        image.enabled = false;
 
         imagePearlOnMouse.transform.SetParent(canvas.transform);
         imagePearlOnMouse.transform.localPosition = Vector3.zero;
         imagePearlOnMouse.transform.localScale = Vector3.one;
         imagePearlOnMouse.SetActive(false);
+
+        GameObject popupOnMouse = Instantiate(popupPrefab, imagePearlOnMouse.transform);
+        popUpOnMouse = popupOnMouse.GetComponent<PopUp>();
+        popUpOnMouse.Init();
 
         UpdateNbPearls();
     }
@@ -116,7 +125,9 @@ public class UIManager : MonoBehaviour
     public void SetImagePearlOnMouse(Sprite _pearl)
     {
         imagePearlOnMouse.SetActive(true);
-        imagePearlOnMouse.GetComponent<Image>().sprite = _pearl;
+        Image image = imagePearlOnMouse.GetComponent<Image>();
+        image.enabled = true;
+        image.sprite = _pearl;
         imagePearlOnMouse.tag = "SelectedImagePearl";
     }
 
@@ -124,7 +135,9 @@ public class UIManager : MonoBehaviour
     {
         imagePearlOnMouse.SetActive(false);
         imagePearlOnMouse.transform.localPosition = Vector3.zero;
-        imagePearlOnMouse.GetComponent<Image>().sprite = null;
+        Image image = imagePearlOnMouse.GetComponent<Image>();
+        image.enabled = false;
+        image.sprite = null;
         imagePearlOnMouse.tag = "Untagged";
     }
 
@@ -272,5 +285,17 @@ public class UIManager : MonoBehaviour
     public void GetProductFromShop()
     {
         StartCoroutine(ProductsManager.Instance.GetHandleBraceletFromShop(handleForGetBraceletFromShop));
+    }
+
+    public void OpenPopupOnMouse(string _keywords)
+    {
+        imagePearlOnMouse.SetActive(true);
+        popUpOnMouse.gameObject.SetActive(true);
+        popUpOnMouse.UpdateText(_keywords);
+    }   
+
+    public void ClosePopupOnMouse()
+    {
+        popUpOnMouse.gameObject.SetActive(false);
     }
 }

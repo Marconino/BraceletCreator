@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     bool isDragging = false;
 
@@ -12,6 +12,7 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
         isDragging = true;
         Sprite pearl = ProductsManager.Instance.GetPearlSpriteOfProduct(transform.GetSiblingIndex());
         UIManager.Instance.SetImagePearlOnMouse(pearl);
+        Debug.Log("OnDrag");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -32,5 +33,16 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
         {
             UIManager.Instance.UpdateFirstAvailablePearl(transform.GetSiblingIndex());
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        string keywords = ProductsManager.Instance.GetKeywordsOfProduct(transform.GetSiblingIndex());
+        UIManager.Instance.OpenPopupOnMouse(keywords);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.ClosePopupOnMouse();
     }
 }

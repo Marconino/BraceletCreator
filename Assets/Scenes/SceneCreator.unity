@@ -5879,7 +5879,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 26.991467
   orthographic: 1
   orthographic size: 5
   m_Depth: -1
@@ -10111,6 +10111,7 @@ MonoBehaviour:
   searchBar: {fileID: 889142572}
   validateBracelet: {fileID: 1507519610}
   bracelet: {fileID: 846507281}
+  popupPrefab: {fileID: 3258614643961008266, guid: 220c5859272090b409b4506373ab5fdc, type: 3}
 --- !u!1 &1960836422
 GameObject:
   m_ObjectHideFlags: 0
