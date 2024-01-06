@@ -262,15 +262,39 @@ public class ProductsManager : MonoBehaviour
             }
         }
     }
+    private void Update()
+    {
 
+    }
     IEnumerator ScreenShot(string _filename, string _idBracelet, string _variantIdBracelet)
     {
         yield return new WaitForEndOfFrame();
-        Texture2D screenTexture = ScreenCapture.CaptureScreenshotAsTexture();
-        byte[] imageBytes = screenTexture.EncodeToPNG();
+
+        int nbPearls = UIManager.Instance.GetNbPearlsInBracelet();
+        float distanceBetweenPearls = UIManager.Instance.GetDistanceBetweenPearlsInCercle();
+        float perimeter = nbPearls * distanceBetweenPearls;
+        float radius = perimeter / (2 * Mathf.PI);
+        float diameter = 2 * radius + 80f; //offset
+
+        RectTransform rectTransform = UIManager.Instance.CreateBoundingRectangle(diameter);
+        rectTransform.sizeDelta = new Vector2(diameter, diameter);
+
+        Vector3[] corners = new Vector3[4];
+        rectTransform.GetWorldCorners(corners);
+        int width = ((int)corners[3].x - (int)corners[0].x);
+        int height = (int)corners[1].y - (int)corners[0].y;
+        var startX = corners[0].x;
+        var startY = corners[0].y;
+
+        Texture2D screenShot = new Texture2D(width, height, TextureFormat.RGB24, false);
+        screenShot.ReadPixels(new Rect(startX, startY, width, height), 0, 0);
+        screenShot.Apply();
+
+        byte[] imageBytes = screenShot.EncodeToPNG();
         string base64Image = Convert.ToBase64String(imageBytes);
         SendImageToJS(base64Image, _filename);
-        Destroy(screenTexture);
+        Destroy(screenShot);
+        Destroy(rectTransform.gameObject);
 
         StartCoroutine(AddCustomImageToCustomBracelet(_filename + ".png", "Image en cours de téléchargement...", _idBracelet, _variantIdBracelet));
     }

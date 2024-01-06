@@ -42,6 +42,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Transform bracelet;
     [SerializeField] GameObject popupPrefab;
     [SerializeField] GameObject warningFilter;
+    [SerializeField] float distanceBetweenPearlsInCercle = 80f;
+
     FilterPearlSize currentFilter = FilterPearlSize.SizePearl8mm;
 
     bool isInCercle = false;
@@ -116,7 +118,23 @@ public class UIManager : MonoBehaviour
             imagePearlOnMouse.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
         }
     }
+    public float GetDistanceBetweenPearlsInCercle()
+    {
+        return distanceBetweenPearlsInCercle;
+    }
+    public int GetNbPearlsInBracelet()
+    {
+        return bracelet.Cast<Transform>().Count(pearl => pearl.gameObject.activeSelf);
+    }
+    public RectTransform CreateBoundingRectangle(float _diameter)
+    {
+        GameObject boundingRectangle = new GameObject("BoundingRectangle");
+        boundingRectangle.transform.SetParent(bracelet.transform.parent, false);
+        boundingRectangle.transform.localScale = Vector3.one;
+        boundingRectangle.transform.localPosition = new Vector3(0, 145, 0); // La position du centre du cercle
 
+        return boundingRectangle.AddComponent<RectTransform>();
+    }
     void UpdateNbPearls()
     {
         ((RectTransform)imagePearlOnMouse.transform).sizeDelta = filter8mm.isOn ? new Vector2(55, 55) : new Vector2(68, 68);
@@ -250,9 +268,8 @@ public class UIManager : MonoBehaviour
         bracelet.GetComponent<HorizontalLayoutGroup>().enabled = false;
         bracelet.GetComponent<PearlsMovement>().enabled = false;
 
-        float distanceBetweenPearls = 80f;
         // Calculer le périmètre du cercle nécessaire pour espacer les objets.
-        float perimeter = childCount * distanceBetweenPearls;
+        float perimeter = childCount * distanceBetweenPearlsInCercle;
 
         // Déterminer le rayon du cercle à partir du périmètre (C = 2 * π * r).
         float radius = perimeter / (2 * Mathf.PI);
@@ -305,7 +322,7 @@ public class UIManager : MonoBehaviour
         image.enabled = !image.enabled;
 
         float y = bracelet.transform.localPosition.y;
-        bracelet.transform.localPosition = new Vector3(0, y == -465f ? 145 : -465f, 145);
+        bracelet.transform.localPosition = new Vector3(0, y == -465f ? 145 : -465f, 0);
     }
 
     string NormalizedHandlePearl(string _handlePearl)
