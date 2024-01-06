@@ -219,8 +219,10 @@ public class ProductsManager : MonoBehaviour
     {
         Pearl[] pearls = UIManager.Instance.GetPearlsInCurrentBracelet();
 
-        string title = "Bracelet personnalisé";
-        string handle = "bracelet-personnalise";
+        string pearlSize = UIManager.Instance.GetCurrentPearlSize() == UIManager.FilterPearlSize.SizePearl8mm ? "8mm" : "10mm";
+
+        string title = "Bracelet personnalisé " + pearlSize;
+        string handle = "bracelet-personnalise-" + pearlSize;
         string description = string.Join("<br>", pearls.Select(p => p.title));
         string price = pearls.Select(p => float.Parse(p.price, CultureInfo.InvariantCulture)).Sum().ToString(CultureInfo.InvariantCulture);
 
@@ -258,14 +260,11 @@ public class ProductsManager : MonoBehaviour
             }
             else
             {
-                //AddProductOnCart(_variantIdBracelet);
+                AddProductOnCart(_variantIdBracelet);
             }
         }
     }
-    private void Update()
-    {
 
-    }
     IEnumerator ScreenShot(string _filename, string _idBracelet, string _variantIdBracelet)
     {
         yield return new WaitForEndOfFrame();

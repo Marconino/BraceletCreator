@@ -126,6 +126,10 @@ public class UIManager : MonoBehaviour
     {
         return bracelet.Cast<Transform>().Count(pearl => pearl.gameObject.activeSelf);
     }
+    public FilterPearlSize GetCurrentPearlSize()
+    {
+        return currentFilter;
+    }
     public RectTransform CreateBoundingRectangle(float _diameter)
     {
         GameObject boundingRectangle = new GameObject("BoundingRectangle");
