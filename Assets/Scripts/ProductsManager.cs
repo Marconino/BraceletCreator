@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using TMPro;
 using Unity.VisualScripting;
@@ -54,9 +55,48 @@ public class ProductsManager : MonoBehaviour
             instance = this;
     }
 
-    void AddProductOnCart(string _idBracelet)
+    IEnumerator PublishProduct(string _idBracelet, string _variantId)
     {
-        Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=" + _idBracelet + "&quantity=1");
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/publish_product.php?id=" + _idBracelet))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur de téléchargement: " + webRequest.error);
+            }
+            else
+            {
+                Debug.Log(webRequest.downloadHandler.text);
+                StartCoroutine(AddProductOnCart(_variantId));
+            }
+        }
+    }
+    IEnumerator AddProductOnCart(string _idBracelet)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("variantId", _idBracelet);
+        form.AddField("quantity", "1");
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Post("https://charremarc.fr/PHPShopify/testPost.php", form))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur de téléchargement: " + webRequest.error);
+            }
+            else
+            {
+                Debug.Log(webRequest.downloadHandler.text);
+
+
+
+                
+            }
+        }
+        //Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=" + _idBracelet + "&quantity=1");
+        //Application.OpenURL("https://stylenzamineraux.fr/pages/loading?variantId=" + _idBracelet + "&quantity=1");
     }
 
     void GetProductFromShop(string _handleBracelet)
@@ -244,6 +284,9 @@ public class ProductsManager : MonoBehaviour
 
                 string randomName = DateTime.Now.Ticks.ToString();
                 StartCoroutine(ScreenShot(randomName, idsBracelet[0], idsBracelet[1]));
+                Application.OpenURL("https://stylenzamineraux.fr/pages/loading");
+                
+                
             }
         }
     }
@@ -259,8 +302,8 @@ public class ProductsManager : MonoBehaviour
                 Debug.LogError("Erreur de téléchargement: " + webRequest.error);
             }
             else
-            {
-                AddProductOnCart(_variantIdBracelet);
+            { 
+                StartCoroutine(PublishProduct(_idBracelet, _variantIdBracelet));
             }
         }
     }
