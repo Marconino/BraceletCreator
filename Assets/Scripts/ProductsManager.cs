@@ -92,7 +92,7 @@ public class ProductsManager : MonoBehaviour
 
 
 
-                
+
             }
         }
         //Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=" + _idBracelet + "&quantity=1");
@@ -285,8 +285,6 @@ public class ProductsManager : MonoBehaviour
                 string randomName = DateTime.Now.Ticks.ToString();
                 StartCoroutine(ScreenShot(randomName, idsBracelet[0], idsBracelet[1]));
                 Application.OpenURL("https://stylenzamineraux.fr/pages/loading");
-                
-                
             }
         }
     }
@@ -303,7 +301,7 @@ public class ProductsManager : MonoBehaviour
             }
             else
             { 
-                StartCoroutine(PublishProduct(_idBracelet, _variantIdBracelet));
+                //StartCoroutine(PublishProduct(_idBracelet, _variantIdBracelet));
             }
         }
     }
@@ -332,13 +330,15 @@ public class ProductsManager : MonoBehaviour
         screenShot.ReadPixels(new Rect(startX, startY, width, height), 0, 0);
         screenShot.Apply();
 
-        byte[] imageBytes = screenShot.EncodeToPNG();
+        byte[] imageBytes = screenShot.EncodeToJPG(50);
+
+        //byte[] imageBytes = screenShot.EncodeToPNG();
         string base64Image = Convert.ToBase64String(imageBytes);
         SendImageToJS(base64Image, _filename);
         Destroy(screenShot);
         Destroy(rectTransform.gameObject);
 
-        StartCoroutine(AddCustomImageToCustomBracelet(_filename + ".png", "Image en cours de téléchargement...", _idBracelet, _variantIdBracelet));
+        StartCoroutine(AddCustomImageToCustomBracelet(_filename + ".jpg", "Image en cours de téléchargement...", _idBracelet, _variantIdBracelet));
     }
 
     public void FilterProduct(UIManager.FilterPearlSize _filterType, string _name)

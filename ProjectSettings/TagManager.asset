@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - SelectedPearl
+  - SelectedImagePearl
   layers:
   - Default
   - TransparentFX

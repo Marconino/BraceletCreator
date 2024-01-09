@@ -10,11 +10,11 @@ mergeInto(LibraryManager.library, {
         view[i] = bytes.charCodeAt(i);
     }
 
-    var imageBlob = new Blob([buffer], { type: 'image/png' });
+    var imageBlob = new Blob([buffer], { type: 'image/jpg' });
 
     var formData = new FormData();
     var name = UTF8ToString(filename);
-    formData.append('image', imageBlob, name + '.png');
+    formData.append('image', imageBlob, name + '.jpg');
 
     fetch('https://charremarc.fr/Images/upload.php', {
         method: 'POST',
