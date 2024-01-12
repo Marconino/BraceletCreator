@@ -12,7 +12,6 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
         isDragging = true;
         Sprite pearl = ProductsManager.Instance.GetPearlSpriteOfProduct(transform.GetSiblingIndex());
         UIManager.Instance.SetImagePearlOnMouse(pearl);
-        Debug.Log("OnDrag");
     }
 
     public void OnDrag(PointerEventData eventData)

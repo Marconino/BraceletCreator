@@ -357,14 +357,14 @@ public class UIManager : MonoBehaviour
     public void OpenPopupOnMouse(string _keywords, int _currentProductIndex)
     {
         imagePearlOnMouse.SetActive(true);
-        popUpOnMouse.gameObject.SetActive(true);
-
+        
         int currentProductIndex = _currentProductIndex + 1;
         popUpOnMouse.UpdateText(_keywords, currentProductIndex != 0 && currentProductIndex % 4 == 0);
     }
 
     public void ClosePopupOnMouse()
     {
-        popUpOnMouse.gameObject.SetActive(false);
+        popUpOnMouse.ClearUI();
+
     }
 }
