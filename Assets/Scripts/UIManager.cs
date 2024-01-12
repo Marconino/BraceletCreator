@@ -354,11 +354,13 @@ public class UIManager : MonoBehaviour
         StartCoroutine(ProductsManager.Instance.GetHandleBraceletFromShop(handleForGetBraceletFromShop));
     }
 
-    public void OpenPopupOnMouse(string _keywords)
+    public void OpenPopupOnMouse(string _keywords, int _currentProductIndex)
     {
         imagePearlOnMouse.SetActive(true);
         popUpOnMouse.gameObject.SetActive(true);
-        popUpOnMouse.UpdateText(_keywords);
+
+        int currentProductIndex = _currentProductIndex + 1;
+        popUpOnMouse.UpdateText(_keywords, currentProductIndex != 0 && currentProductIndex % 4 == 0);
     }
 
     public void ClosePopupOnMouse()

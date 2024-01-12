@@ -38,7 +38,7 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
     public void OnPointerEnter(PointerEventData eventData)
     {
         string keywords = ProductsManager.Instance.GetKeywordsOfProduct(transform.GetSiblingIndex());
-        UIManager.Instance.OpenPopupOnMouse(keywords);
+        UIManager.Instance.OpenPopupOnMouse(keywords, transform.GetSiblingIndex());
     }
 
     public void OnPointerExit(PointerEventData eventData)

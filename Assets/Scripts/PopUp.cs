@@ -13,17 +13,18 @@ public class PopUp : MonoBehaviour
     [SerializeField] Vector2 offsetPosWithMouse;
 
     bool updateRequired = false;
-
+    bool isRevert = false;
     public void Init()
     {
         backgroundRect = GetComponent<RectTransform>();
         textComponent = transform.GetChild(0).GetComponent<TMP_Text>();
     }
 
-    public void UpdateText(string _text)
+    public void UpdateText(string _text, bool _isRevert)
     {
         textComponent.text = _text;
         updateRequired = true;
+        isRevert = _isRevert;
     }
 
     private void Update()
@@ -31,7 +32,8 @@ public class PopUp : MonoBehaviour
         if (updateRequired)
         {
             backgroundRect.sizeDelta = new Vector2(textComponent.rectTransform.sizeDelta.x + offsetSizeBackground.x, textComponent.preferredHeight + offsetSizeBackground.y);
-            transform.localPosition = new Vector3(backgroundRect.sizeDelta.x/2f + offsetPosWithMouse.x, backgroundRect.sizeDelta.y/2f + offsetPosWithMouse.y, 0);
+            float x = isRevert ? -(backgroundRect.sizeDelta.x / 2f + offsetPosWithMouse.x) : backgroundRect.sizeDelta.x / 2f + offsetPosWithMouse.x;
+            transform.localPosition = new Vector3(x, backgroundRect.sizeDelta.y/2f + offsetPosWithMouse.y, 0);
             updateRequired = false;
         }
     }
