@@ -16,7 +16,7 @@ mergeInto(LibraryManager.library, {
     var name = UTF8ToString(filename);
     formData.append('image', imageBlob, name + '.jpg');
 
-    fetch('https://charremarc.fr/Images/upload.php', {
+    fetch('https://createurdebraceletstylenza.fr/Images/upload.php', {
         method: 'POST',
         body: formData
     })

@@ -306,9 +306,9 @@ public class UIManager : MonoBehaviour
             ArrangeInCircle();
 
         isInCercle = !isInCercle;
-
+        
         string firstHandlePearl = bracelet.Cast<Transform>().First().GetComponent<Pearl>().GetHandle();
-        bool currentBraceletAlreadyExistInShop = bracelet.Cast<Transform>().Where(child => child.gameObject.activeSelf).All(child => child.GetComponent<Pearl>().GetHandle() == firstHandlePearl);
+        bool currentBraceletAlreadyExistInShop = filterWrist.value > 2 && filterWrist.value < 8 && bracelet.Cast<Transform>().Where(child => child.gameObject.activeSelf).All(child => child.GetComponent<Pearl>().GetHandle() == firstHandlePearl);
         handleForGetBraceletFromShop = currentBraceletAlreadyExistInShop ? NormalizedHandlePearl(firstHandlePearl) : string.Empty;
 
         for (int i = 2; i < canvas.transform.childCount - 2; i++) //start at 2 because background is the first go, bracelet is the second go

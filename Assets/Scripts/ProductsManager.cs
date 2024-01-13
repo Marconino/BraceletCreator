@@ -55,57 +55,13 @@ public class ProductsManager : MonoBehaviour
             instance = this;
     }
 
-    IEnumerator PublishProduct(string _idBracelet, string _variantId)
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/publish_product.php?id=" + _idBracelet))
-        {
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("Erreur de téléchargement: " + webRequest.error);
-            }
-            else
-            {
-                Debug.Log(webRequest.downloadHandler.text);
-                StartCoroutine(AddProductOnCart(_variantId));
-            }
-        }
-    }
-    IEnumerator AddProductOnCart(string _idBracelet)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("variantId", _idBracelet);
-        form.AddField("quantity", "1");
-
-        using (UnityWebRequest webRequest = UnityWebRequest.Post("https://charremarc.fr/PHPShopify/testPost.php", form))
-        {
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("Erreur de téléchargement: " + webRequest.error);
-            }
-            else
-            {
-                Debug.Log(webRequest.downloadHandler.text);
-
-
-
-
-            }
-        }
-        //Application.OpenURL("https://stylenzamineraux.fr/apps/braceletcreator?variantId=" + _idBracelet + "&quantity=1");
-        //Application.OpenURL("https://stylenzamineraux.fr/pages/loading?variantId=" + _idBracelet + "&quantity=1");
-    }
-
     void GetProductFromShop(string _handleBracelet)
     {
         Application.OpenURL("https://stylenzamineraux.fr/products/" + _handleBracelet);
     }
     public IEnumerator GetHandleBraceletFromShop(string _handle)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/get_bracelet_from_shop.php?filter=" + _handle))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://createurdebraceletstylenza.fr/PHPShopify/get_bracelet_from_shop.php?filter=" + _handle))
         {
             yield return webRequest.SendWebRequest();
 
@@ -122,7 +78,7 @@ public class ProductsManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(GetProductsCount("https://charremarc.fr/PHPShopify/count_products_collection.php"));
+        StartCoroutine(GetProductsCount("https://createurdebraceletstylenza.fr/PHPShopify/count_products_collection.php"));
     }
 
     IEnumerator GetProductsCount(string url)
@@ -153,7 +109,7 @@ public class ProductsManager : MonoBehaviour
                     Instantiate(UIProductPrefab, child.transform, false);
                 }
 
-                StartCoroutine(GetProducts("https://charremarc.fr/PHPShopify/get_products_collection.php?count=" + nbProducts));
+                StartCoroutine(GetProducts("https://createurdebraceletstylenza.fr/PHPShopify/get_products_collection.php?count=" + nbProducts));
             }
         }
     }
@@ -270,7 +226,7 @@ public class ProductsManager : MonoBehaviour
     }
     IEnumerator CreateCustomBracelet(string _title, string _handle, string _description, string _price)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/create_product.php?title=" + _title + "&handle=" + _handle + "&collection=612807442764&description=" + _description + "&price=" + _price))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://createurdebraceletstylenza.fr/PHPShopify/create_product.php?title=" + _title + "&handle=" + _handle + "&collection=612807442764&description=" + _description + "&price=" + _price))
         {
             yield return webRequest.SendWebRequest();
 
@@ -291,7 +247,7 @@ public class ProductsManager : MonoBehaviour
 
     IEnumerator AddCustomImageToCustomBracelet(string _filename, string _textImage, string _idBracelet, string _variantIdBracelet)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://charremarc.fr/PHPShopify/add_image_product.php?filename=" + _filename + "&text=" + _textImage + "&id=" + _idBracelet))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get("https://createurdebraceletstylenza.fr/PHPShopify/add_image_product.php?filename=" + _filename + "&text=" + _textImage + "&id=" + _idBracelet))
         {
             yield return webRequest.SendWebRequest();
 
