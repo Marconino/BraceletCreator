@@ -457,9 +457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &6455900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,9 +671,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &40249235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -891,9 +885,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &40961512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1108,9 +1099,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &53550087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,9 +1422,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &101227282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1801,9 +1786,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &122694548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2041,7 +2023,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1890817300}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: EndOfWarning
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2824,9 +2806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &387093727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3169,9 +3148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &610240916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3589,9 +3565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &675650112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3899,9 +3872,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &703309239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4210,9 +4180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &710397246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4427,9 +4394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &713952090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4644,9 +4608,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &715054043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4861,9 +4822,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &735622059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5308,9 +5266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &841569107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6148,9 +6103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &938930642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6592,9 +6544,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &981915434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6908,9 +6857,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1033907808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7125,9 +7071,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1064099201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7342,9 +7285,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1087757831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7650,6 +7590,7 @@ GameObject:
   - component: {fileID: 1255298836}
   - component: {fileID: 1255298837}
   - component: {fileID: 1255298838}
+  - component: {fileID: 1255298839}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -7715,6 +7656,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &1255298839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255298835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2949261f17bb2bb4885679e31137ad56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logoStylenza: {fileID: 21300000, guid: 03c5e8baa72806b488ef778797dcd9c2, type: 3}
+  UIProductPrefab: {fileID: 7991932618201570281, guid: 20d058e02b16b8a4786e0aac36e74185, type: 3}
+  maxConcurrentDownloads: 5
 --- !u!1 &1298412790
 GameObject:
   m_ObjectHideFlags: 0
@@ -8201,9 +8157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1359591160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8662,9 +8615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1433549105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8965,54 +8915,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1507985741}
   m_CullTransparentMesh: 1
---- !u!1 &1562060668
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1562060669}
-  - component: {fileID: 1562060670}
-  m_Layer: 0
-  m_Name: '@ProductsManager'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1562060669
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562060668}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1562060670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562060668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2949261f17bb2bb4885679e31137ad56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logoStylenza: {fileID: 21300000, guid: 03c5e8baa72806b488ef778797dcd9c2, type: 3}
-  productsGO: {fileID: 1255298835}
-  UIProductPrefab: {fileID: 7991932618201570281, guid: 20d058e02b16b8a4786e0aac36e74185, type: 3}
-  maxConcurrentDownloads: 5
 --- !u!1 &1606569207
 GameObject:
   m_ObjectHideFlags: 0
@@ -9100,13 +9002,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1890817300}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: EndOfWarning
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Yes
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1606569210
@@ -9585,9 +9487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1653064030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9688,7 +9587,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1562060670}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ProductsManager, Assembly-CSharp
         m_MethodName: AddCustomBraceletToCart
         m_Mode: 1
@@ -9952,9 +9851,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1679601622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10282,9 +10178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1735914535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10784,9 +10677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &1784465663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10962,7 +10852,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1890817300
 MonoBehaviour:
@@ -10976,6 +10866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b31125393eb9da42abf8a473e1765e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ProductsM: {fileID: 1255298839}
+  popupPrefab: {fileID: 3258614643961008266, guid: 220c5859272090b409b4506373ab5fdc, type: 3}
   canvas: {fileID: 1758461673}
   filter8mm: {fileID: 175677727}
   filter10mm: {fileID: 1000184000}
@@ -10983,7 +10875,6 @@ MonoBehaviour:
   searchBar: {fileID: 889142572}
   validateBracelet: {fileID: 1507519610}
   bracelet: {fileID: 846507281}
-  popupPrefab: {fileID: 3258614643961008266, guid: 220c5859272090b409b4506373ab5fdc, type: 3}
   warningFilter: {fileID: 155581066}
   distanceBetweenPearlsInCercle: 80
 --- !u!1 &1960836422
@@ -11750,9 +11641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &2036227517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12252,9 +12140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fc80e98ade93141b8a60978857f3f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  handle: 
-  price: 
 --- !u!114 &2117329207
 MonoBehaviour:
   m_ObjectHideFlags: 0

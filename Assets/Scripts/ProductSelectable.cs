@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,10 +8,11 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
     public void OnBeginDrag(PointerEventData eventData)
     {
         isDragging = true;
-        Sprite pearl = ProductsManager.Instance.GetPearlSpriteOfProduct(transform.GetSiblingIndex());
+        Sprite pearl = UIManager.Instance.GetProductsManager().GetPearlSpriteOfProduct(transform.GetSiblingIndex());
         UIManager.Instance.SetImagePearlOnMouse(pearl);
     }
 
+    //Required for drag and drop
     public void OnDrag(PointerEventData eventData)
     {
         
@@ -36,7 +35,7 @@ public class ProductSelectable : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        string keywords = ProductsManager.Instance.GetKeywordsOfProduct(transform.GetSiblingIndex());
+        string keywords = UIManager.Instance.GetProductsManager().GetKeywordsOfProduct(transform.GetSiblingIndex());
         UIManager.Instance.OpenPopupOnMouse(keywords, transform.GetSiblingIndex());
     }
 

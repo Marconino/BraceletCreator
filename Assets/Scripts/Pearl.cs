@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Pearl : MonoBehaviour
 {
-    public string title;
-    public string handle;
-    public string price;
+    string title;
+    string handle;
+    string price;
     Image currImage;
     Sprite baseSprite;
 
-    private void Start()
+    void Start()
     {
         title = string.Empty;
         price = string.Empty;
@@ -20,7 +17,7 @@ public class Pearl : MonoBehaviour
         baseSprite = Sprite.Create(currImage.sprite.texture, currImage.sprite.rect, currImage.sprite.pivot, currImage.sprite.pixelsPerUnit);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerExit2D(Collider2D collision)
     {
         if (transform.CompareTag("SelectedPearl"))
         {
@@ -41,9 +38,7 @@ public class Pearl : MonoBehaviour
         title = string.Empty;
         handle = string.Empty;
         price = string.Empty;
-        //currImage.sprite = null;
         currImage.sprite = baseSprite;
-        //currImage.pixelsPerUnitMultiplier = pixelPerUnitMultiplier;
     }
 
     public bool HasValues()
@@ -59,5 +54,10 @@ public class Pearl : MonoBehaviour
     public string GetHandle()
     {
         return handle;
+    }   
+
+    public string GetPrice()
+    {
+        return price;
     }
 }
