@@ -127,7 +127,7 @@ public class UIManager : MonoBehaviour
     {
         string randomName = DateTime.Now.Ticks.ToString();
         int nbPearls = GetNbPearlsInBracelet();
-        StartCoroutine(ScreenshotBracelet.TakeScreenshot(bracelet.parent, GetDiameterOfBracelet(nbPearls), randomName));  
+        StartCoroutine(ScreenshotBracelet.TakeScreenshot(canvas.transform, GetDiameterOfBracelet(nbPearls) + 80f, randomName)); //80 = offset
         await RequestToShopify.SendRequest("https://createurdebraceletstylenza.fr/PHPShopify/add_image_product.php?filename=" + randomName + ".jpg" + "&text=Image en cours de téléchargement..." + "&id=" + _idBracelet);
     }
     public async void GetProductFromShop()
@@ -334,7 +334,7 @@ public class UIManager : MonoBehaviour
     {
         float perimeter = _nbPearls * distanceBetweenPearlsInCercle;
         float radius = perimeter / (2 * Mathf.PI);
-        float diameter = 2 * radius + 80f; //80 = offset
+        float diameter = 2 * radius;
         return diameter;
     }
     int GetNbPearlsInBracelet()

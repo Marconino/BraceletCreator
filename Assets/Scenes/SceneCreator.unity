@@ -9587,8 +9587,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ProductsManager, Assembly-CSharp
+      - m_Target: {fileID: 1890817300}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: AddCustomBraceletToCart
         m_Mode: 1
         m_Arguments:
